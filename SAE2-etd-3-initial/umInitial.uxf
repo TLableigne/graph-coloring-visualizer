@@ -1,11 +1,78 @@
-<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>340</x><y>160</y><w>210</w><h>190</h></coordinates><panel_attributes>Algorithm
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes
+
+</help_text><element><id>UMLClass</id><coordinates><x>20</x><y>10</y><w>400</w><h>830</h></coordinates><panel_attributes>/&lt;&lt;Interface&gt;&gt;/
+/IGraph/
+
 --
--id: Long
-_-ClassAttribute: Long_
+
 --
-#Operation(i: int): int
-/+AbstractOperation()/
++ createGraph(); IGraph
++ copy(); IGraph
++ addNode(); INode
++ addNode(INode); INode
++ addEdge(IEdge); IEdge
++ addEdge(INode, INode); IEdge
++ delNode(INode); void 
++ void delEdge(IEdge); void 
++ numberOfNodes(); int
++ numberOfEdges(); int
++ getNeighbors(INode); ArrayList&lt;INode&gt;
++ getSuccesors(INode); ArrayList&lt;INode&gt;
++ getPredecessors(INode); ArrayList&lt;INode&gt;
++ getInOutEdges(INode); ArrayList&lt;IEdge&gt;
++ getInEdges(INode); ArrayList&lt;IEdge&gt;
++ getOutEdges(INode); ArrayList&lt;IEdge&gt;
++ getNodes(); ArrayList&lt;INode&gt;
++ getEdges(); ArrayList&lt;IEdge&gt;
++ source(IEdge); INode
++ target(IEdge); INode
++ inDegree(INode); int
++ outDegree(INode); int
++ degree(INode); int
++ existEdge(INode, INode, boolean); boolean
++ getEdge(INode, INode, boolean); IEdge
++ getSizes(); SizeProperty
++ getNodeSize(INode); Size
++ getEdgeWidth(IEdge); Double
++ setNodeSize(INode, Size); void 
++ setEdgeWidth(IEdge, Double); void 
++ setAllNodesSizes(Size); void 
++ setAllEdgesWidths(Double); void 
++ getLayout(); LayoutProperty
++ getNodePosition(INode); Coord
++ getEdgePosition(IEdge); ArrayList&lt;Coord&gt;
++ setNodePosition(INode, Coord); void 
++ setEdgePosition(IEdge, ArrayList&lt;Coord&gt;); void 
++ setAllNodesPositions(Coord); void 
++ setAllEdgesPositions(ArrayList&lt;Coord&gt;); void 
++ getBoundingBox(); ArrayList&lt;Coord&gt;
++ getColor(); ColorProperty 
++ getNodeColor(INode); Color 
++ getEdgeColor(IEdge); Color 
++ setNodeColor(INode, Color); void 
++ setEdgeColor(IEdge, Color); void 
++ setAllNodesColors(Color); void 
++ setAllEdgesColors(Color); void 
++ welshAndPowell(); void 
++ sixColors(); void 
++ fiveColors(); void </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>540</x><y>80</y><w>170</w><h>100</h></coordinates><panel_attributes>/&lt;&lt;Interface&gt;&gt;/
+/IEdge/
 --
-Responsibilities
--- Resp1
-*-- Resp2*</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+
+--
++ source(); INode
++ target(); INode</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>770</x><y>70</y><w>180</w><h>40</h></coordinates><panel_attributes>/&lt;&lt;Interface&gt;&gt;/
+/INode/
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>790</x><y>290</y><w>210</w><h>190</h></coordinates><panel_attributes>Size
+--
++ w; double
++ h; double
+--
++ Size()
++ Size(double, double) 
++ Size(Size)
++ getH() double 
++ getW() double 
++ setW(int) void
++ setH(int) void
++ toString() String</panel_attributes><additional_attributes></additional_attributes></element></diagram>
