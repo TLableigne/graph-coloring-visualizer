@@ -1,10 +1,6 @@
-<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes
-
-</help_text><element><id>UMLClass</id><coordinates><x>20</x><y>10</y><w>400</w><h>830</h></coordinates><panel_attributes>/&lt;&lt;Interface&gt;&gt;/
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>0</x><y>0</y><w>400</w><h>830</h></coordinates><panel_attributes>/&lt;&lt;Interface&gt;&gt;/
 /IGraph/
-
 --
-
 --
 + createGraph(); IGraph
 + copy(); IGraph
@@ -55,15 +51,13 @@
 + setAllEdgesColors(Color); void 
 + welshAndPowell(); void 
 + sixColors(); void 
-+ fiveColors(); void </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>540</x><y>80</y><w>170</w><h>100</h></coordinates><panel_attributes>/&lt;&lt;Interface&gt;&gt;/
++ fiveColors(); void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>520</x><y>70</y><w>170</w><h>100</h></coordinates><panel_attributes>/&lt;&lt;Interface&gt;&gt;/
 /IEdge/
 --
-
 --
 + source(); INode
-+ target(); INode</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>770</x><y>70</y><w>180</w><h>40</h></coordinates><panel_attributes>/&lt;&lt;Interface&gt;&gt;/
-/INode/
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>790</x><y>290</y><w>210</w><h>190</h></coordinates><panel_attributes>Size
++ target(); INode</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>750</x><y>60</y><w>180</w><h>40</h></coordinates><panel_attributes>/&lt;&lt;Interface&gt;&gt;/
+/INode/</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>770</x><y>280</y><w>210</w><h>190</h></coordinates><panel_attributes>Size
 --
 + w; double
 + h; double
@@ -75,4 +69,46 @@
 + getW() double 
 + setW(int) void
 + setH(int) void
-+ toString() String</panel_attributes><additional_attributes></additional_attributes></element></diagram>
++ toString() String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1030</x><y>10</y><w>250</w><h>280</h></coordinates><panel_attributes>Color
+Package::Graph
+--
++ r: int
++ g: int
++ b: int
++ a: int
+--
++Color(Color)
++Color(int, int, int, int)
++getR():int
++getG():int
++getB():int
++getA():int
++setR(int):void
++setG(int):void
++setA(int):void
+_+interpolate(Color, Color, int, int): Color_
++toString(): string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1030</x><y>340</y><w>250</w><h>290</h></coordinates><panel_attributes>Coord
+Package::Graph
+--
++x: double 
++y: double 
+--
++Coord()
++Coord(double, double)
++getX():double
++getY():double
++setX():double
++dist(Coord):double
++norm():double
++mult(double):void
++add(double, double): void
++add(Coord):void
+_+add(Coord, Coord): Coord_
+_+minus(Coord, Coord): Coord_
+_+mult(Coord, Coord): Coord_
++toString(): string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1030</x><y>650</y><w>210</w><h>190</h></coordinates><panel_attributes>GraphLoader
+Package::Graph
+--
+--
+_+loadFromFile(String, String): IGraph_
+_+loadEdgesFromFile(IGGraph, HashMap&lt;Integer, INode&gt;, String):void_</panel_attributes><additional_attributes></additional_attributes></element></diagram>
