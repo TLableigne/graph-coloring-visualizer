@@ -494,8 +494,11 @@ public class Graph implements IGraph {
 
     /**
      * Color the nodes with Well & Powell algorithm.
+     * GraphViewver demande l'action -> graph appelle welshAndPowell -> calcule et modifie les colorPorporerty -> GrapgCanvas lit les propriétés et dessine les bonnes couleurs
      */
+    @Override
     public void welshAndPowell() {
+        info.iut.sae2.algorithm.WelshAndPowell.execute(this);   // fait appel à la classe que l'on vient de créer en lui passant le graphe courant (this)
 
     }
     

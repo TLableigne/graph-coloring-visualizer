@@ -6,7 +6,7 @@ package info.iut.sae2.graphs;
 
 /**
  *
- * @author rbourqui
+ * @author rbourqui, zsabri, tlableigne
  */
 public class Color {
     
@@ -94,7 +94,7 @@ public class Color {
      * @param g the green channnel
      */
     public void setG(int g){
-        this.g = b;
+        this.g = g;
     }
     
     /**
