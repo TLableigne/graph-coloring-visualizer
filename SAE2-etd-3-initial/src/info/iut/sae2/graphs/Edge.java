@@ -1,7 +1,12 @@
+
 package info.iut.sae2.graphs;
+
+import java.util.ArrayList;
 
 public class Edge implements IEdge{
 
+    private ArrayList<INode> listeNoeux;
+    
     /**
      * Returns the source of the edge
      * 
