@@ -1,7 +1,7 @@
 package info.iut.sae2.graphs;
 
 public class Node implements INode{
-    private Color c;
-    private int degree;
+    // IGraph gère déja les couleurs via les méthodes setNodeColor getNodeColor et calcule le dégré avec la méthode degré(INode n)
+    
 
 }
