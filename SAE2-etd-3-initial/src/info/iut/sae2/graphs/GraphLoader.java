@@ -100,7 +100,7 @@ public class GraphLoader {
             String[] parts = line.split(sep);
             int src = Integer.parseInt(parts[0]);
             int tgt = Integer.parseInt(parts[1]);
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < br.lines().count(); i++) {
                 g.addEdge(nodeMap.get(src), nodeMap.get(tgt));            
             }
         }

@@ -52,7 +52,7 @@ public static void execute(IGraph graph) {
     /**
      * méthode pour transformer nos entiers en objet Color
      */
-    private static void applyColorsToGraph(IGraph graph, Map<INode, Integer> colorIndices) {
+    public static void applyColorsToGraph(IGraph graph, Map<INode, Integer> colorIndices) {
         // on défini une palette de couleur de base
         Color[] palette = {
             new Color(255, 0, 0, 255),    // rouge 0

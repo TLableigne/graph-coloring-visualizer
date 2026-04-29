@@ -2,11 +2,15 @@
 package info.iut.sae2.graphs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Edge implements IEdge{
 
-    private ArrayList<INode> listeNoeux;
+    private HashMap<INode, INode> listeNoeux;
     
+    public Edge (INode src, INode tgt) {
+        this.listeNoeux.put(src, tgt);
+    }
     /**
      * Returns the source of the edge
      * 

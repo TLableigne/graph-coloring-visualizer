@@ -1,17 +1,19 @@
 package info.iut.sae2.graphs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.w3c.dom.Node;
 
+import info.iut.sae2.algorithm.WelshAndPowell;
 import info.iut.sae2.properties.ColorProperty;
 import info.iut.sae2.properties.LayoutProperty;
 import info.iut.sae2.properties.SizeProperty;
 
 public class Graph implements IGraph {
 
-    private ArrayList<INode> Noeux;
-    private ArrayList<IEdge> Arretes;
+    private ArrayList<INode> Nodes;
+    private ArrayList<IEdge> Edges;
     
     
     /**
@@ -53,7 +55,12 @@ public class Graph implements IGraph {
      * @return the added node
      */
     public INode addNode(INode n) {
-        return null;
+        if (this.Nodes.add(n)) {
+            return n;
+        }
+        else {
+            return null;
+        }
     }
 
     /**
@@ -74,7 +81,13 @@ public class Graph implements IGraph {
      * @return the added edge
      */
     public IEdge addEdge(INode src, INode tgt) {
-        return null;
+        Edge e = new Edge(src, tgt);
+        if (this.Edges.add(e)) {
+            return e;
+        }
+        else {
+            return null;
+        }
     }
 
     /**
@@ -101,7 +114,7 @@ public class Graph implements IGraph {
      * @return the number of nodes
      */
     public int numberOfNodes() {
-        return 0;
+        return this.Nodes.size();
     }
 
     /**
@@ -110,7 +123,7 @@ public class Graph implements IGraph {
      * @return the number of edges
      */
     public int numberOfEdges() {
-        return 0;
+        return this.Edges.size();
     }
 
     /**
@@ -487,9 +500,6 @@ public class Graph implements IGraph {
      * @param c the new color of the edges
      */
     public void setAllEdgesColors(Color c) {
-        for (IEdge thisEdge : this.Arretes) {
-            
-        }
     }
 
     /**
