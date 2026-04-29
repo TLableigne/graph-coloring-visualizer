@@ -5,6 +5,7 @@
 package info.iut.sae2.graphs;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -41,7 +42,7 @@ public class GraphLoader {
     /**
      * Load and add the nodes described in the specified file.
      *
-     * @param g the graph where the nodes are added
+     * @param g            the graph where the nodes are added
      * @param nodeFileName path to the file containing edges informations
      * @return a map associating the node ids in the file and the graph nodes
      */
@@ -80,12 +81,37 @@ public class GraphLoader {
         return nodeMap;
     }
 
-    /* Load and add the edges described in the specified file.
+    /*
+     * Load and add the edges described in the specified file.
      *
      * @param g the graph where the edges are added
-     * @param nodeMap the map associating nodes ids in the file and nodes in the graph
+     * 
+     * @param nodeMap the map associating nodes ids in the file and nodes in the
+     * graph
+     * 
      * @param edgeFileName path to the file containing edges informations
      */
     private static void loadEdgesFromFile(IGraph g, HashMap<Integer, INode> nodeMap, String edgeFileName) {
+            String sep = ";";
+            try { BufferedReader br = new BufferedReader(new FileReader(edgeFileName));
+            String line;
+            while ((line = br.readLine()) != null) {
+            
+            String[] parts = line.split(sep);
+            int src = Integer.parseInt(parts[0]);
+            int tgt = Integer.parseInt(parts[1]);
+            for (int i = 0; i < 10; i++) {
+                g.addEdge(nodeMap.get(src), nodeMap.get(tgt));            
+            }
+        }
+     } catch (IOException e) {
+        // Gestion de l'erreur si le fichier est introuvable ou illisible
+        System.err.println("Erreur lors de la lecture du fichier : " + e.getMessage());
+    } catch (NumberFormatException e) {
+        // Gestion de l'erreur si le fichier contient des lettres au lieu de nombres
+        System.err.println("Erreur de format de nombre dans le fichier : " + e.getMessage());
     }
+
+    
 }
+    }
