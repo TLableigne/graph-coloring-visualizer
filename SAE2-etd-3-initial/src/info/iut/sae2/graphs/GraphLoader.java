@@ -97,7 +97,7 @@ public class GraphLoader {
             String line;
             while ((line = br.readLine()) != null) {
             
-            String[] parts = line.split(";");
+            String[] parts = line.split(sep);
             int src = Integer.parseInt(parts[0]);
             int tgt = Integer.parseInt(parts[1]);
             for (int i = 0; i < 10; i++) {
