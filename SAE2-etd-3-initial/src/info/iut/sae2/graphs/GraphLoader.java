@@ -100,9 +100,8 @@ public class GraphLoader {
             String[] parts = line.split(sep);
             int src = Integer.parseInt(parts[0]);
             int tgt = Integer.parseInt(parts[1]);
-            for (int i = 0; i < br.lines().count(); i++) {
-                g.addEdge(nodeMap.get(src), nodeMap.get(tgt));            
-            }
+            g.addEdge(nodeMap.get(src), nodeMap.get(tgt));    // we don't need a for loop, we add our edge one single time
+            
         }
      } catch (IOException e) {
         // Gestion de l'erreur si le fichier est introuvable ou illisible

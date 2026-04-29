@@ -1,23 +1,25 @@
 
 package info.iut.sae2.graphs;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+
 
 public class Edge implements IEdge{
 
-    private HashMap<INode, INode> listeNoeux;
+    private INode source;
+    private INode target;
     
     public Edge (INode src, INode tgt) {
-        this.listeNoeux.put(src, tgt);
+        this.source = src;
+        this.target = tgt;
     }
     /**
      * Returns the source of the edge
      * 
      * @return the source of the edge
      */
+    @Override
     public INode source() {
-        return null;
+        return this.source;
     }
     
     /**
@@ -25,8 +27,9 @@ public class Edge implements IEdge{
      * 
      * @return the target of the edge
      */
+    @Override
     public INode target() {
-        return null;
+        return this.target;
     }
     
 }

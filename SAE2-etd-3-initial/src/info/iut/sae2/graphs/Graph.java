@@ -3,7 +3,6 @@ package info.iut.sae2.graphs;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.w3c.dom.Node;
 
 import info.iut.sae2.algorithm.WelshAndPowell;
 import info.iut.sae2.properties.ColorProperty;
@@ -14,8 +13,21 @@ public class Graph implements IGraph {
 
     private ArrayList<INode> Nodes;
     private ArrayList<IEdge> Edges;
-    
-    
+    private LayoutProperty layout;
+    private SizeProperty sizes;
+    private ColorProperty colors;
+
+    /**
+     * Constructor
+     */
+    public Graph(){
+        this.Nodes = new ArrayList<>();
+        this.Edges = new ArrayList<>();
+
+        this.layout = new LayoutProperty();
+        this.sizes = new SizeProperty();
+        this.colors = new ColorProperty();
+    }
     /**
      * Instanciates an IGraph.
      * This method is used to create a new empty graph of the same
@@ -45,7 +57,10 @@ public class Graph implements IGraph {
      * @return the added node
      */
     public INode addNode() {
-        return null;
+        INode newNode = new Node();
+        this.Nodes.add(newNode);
+        return newNode;
+
     }
 
     /**
@@ -192,7 +207,7 @@ public class Graph implements IGraph {
      * @return the nodes of the graph
      */
     public ArrayList<INode> getNodes() {
-        return null;
+        return this.Nodes;
     }
 
     /**
@@ -201,7 +216,7 @@ public class Graph implements IGraph {
      * @return the edges of the graph
      */
     public ArrayList<IEdge> getEdges() {
-        return null;
+        return this.Edges;
     }
 
     /**
@@ -290,7 +305,7 @@ public class Graph implements IGraph {
      * @return The SizeProperty of the IGraph
      */
     public SizeProperty getSizes() {
-        return null;
+        return this.sizes;
     }
 
     /**
@@ -357,7 +372,7 @@ public class Graph implements IGraph {
      * @return The LayoutProperty of the IGraph
      */
     public LayoutProperty getLayout() {
-        return null;
+        return this.layout;
     }
 
     /**
@@ -442,7 +457,7 @@ public class Graph implements IGraph {
      * @return The ColorProperty of the IGraph
      */
     public ColorProperty getColor() {
-        return null;
+        return this.colors;
     }
 
     /**
