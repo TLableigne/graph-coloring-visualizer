@@ -11,8 +11,8 @@ import info.iut.sae2.properties.SizeProperty;
 
 public class Graph implements IGraph {
 
-    private ArrayList<INode> Nodes;
-    private ArrayList<IEdge> Edges;
+    private ArrayList<INode> nodes;
+    private ArrayList<IEdge> edges;
     private LayoutProperty layout;
     private SizeProperty sizes;
     private ColorProperty colors;
@@ -21,8 +21,8 @@ public class Graph implements IGraph {
      * Constructor
      */
     public Graph(){
-        this.Nodes = new ArrayList<>();
-        this.Edges = new ArrayList<>();
+        this.nodes = new ArrayList<>();
+        this.edges = new ArrayList<>();
 
         this.layout = new LayoutProperty();
         this.sizes = new SizeProperty();
@@ -58,7 +58,7 @@ public class Graph implements IGraph {
      */
     public INode addNode() {
         INode newNode = new Node();
-        this.Nodes.add(newNode);
+        this.nodes.add(newNode);
         return newNode;
 
     }
@@ -70,7 +70,7 @@ public class Graph implements IGraph {
      * @return the added node
      */
     public INode addNode(INode n) {
-        if (this.Nodes.add(n)) {
+        if (this.nodes.add(n)) {
             return n;
         }
         else {
@@ -97,7 +97,7 @@ public class Graph implements IGraph {
      */
     public IEdge addEdge(INode src, INode tgt) {
         Edge e = new Edge(src, tgt);
-        if (this.Edges.add(e)) {
+        if (this.edges.add(e)) {
             return e;
         }
         else {
@@ -129,7 +129,7 @@ public class Graph implements IGraph {
      * @return the number of nodes
      */
     public int numberOfNodes() {
-        return this.Nodes.size();
+        return this.nodes.size();
     }
 
     /**
@@ -138,7 +138,7 @@ public class Graph implements IGraph {
      * @return the number of edges
      */
     public int numberOfEdges() {
-        return this.Edges.size();
+        return this.edges.size();
     }
 
     /**
@@ -207,7 +207,7 @@ public class Graph implements IGraph {
      * @return the nodes of the graph
      */
     public ArrayList<INode> getNodes() {
-        return this.Nodes;
+        return this.nodes;
     }
 
     /**
@@ -216,7 +216,7 @@ public class Graph implements IGraph {
      * @return the edges of the graph
      */
     public ArrayList<IEdge> getEdges() {
-        return this.Edges;
+        return this.edges;
     }
 
     /**
@@ -226,7 +226,7 @@ public class Graph implements IGraph {
      * @return the source of the edge
      */
     public INode source(IEdge e) {
-        return null;
+        return e.source();
     }
 
     /**
@@ -236,7 +236,7 @@ public class Graph implements IGraph {
      * @return the target of the edge
      */
     public INode target(IEdge e) {
-        return null;
+        return e.target();
     }
 
     /**
@@ -315,7 +315,12 @@ public class Graph implements IGraph {
      * @return the size of the node
      */
     public Size getNodeSize(INode n) {
-        return null;
+        Size s = this.sizes.getNodeValue(n);
+        if (s != null) {
+            return s;
+        } else {
+            return SizeProperty.DEFAULT_NODE_SIZE;
+        }
     }
 
     /**
@@ -325,7 +330,12 @@ public class Graph implements IGraph {
      * @return the width of the edge
      */
     public Double getEdgeWidth(IEdge e) {
-        return null;
+        Double w = this.sizes.getEdgeValue(e);
+        if (w != null) {
+            return w;
+        } else {
+            return SizeProperty.DEFAULT_EDGE_WIDTH;
+        }
     }
 
     /**
@@ -335,7 +345,7 @@ public class Graph implements IGraph {
      * @param s new size of the node
      */
     public void setNodeSize(INode n, Size s) {
-        
+        this.sizes.setNodeValue(n, s);
     }
 
     /**
@@ -345,7 +355,7 @@ public class Graph implements IGraph {
      * @param width new width of the edge
      */
     public void setEdgeWidth(IEdge e, Double width) {
-        
+        this.sizes.setEdgeValue(e, width);
     }
 
     /**
@@ -354,7 +364,7 @@ public class Graph implements IGraph {
      * @param s new size of the nodes
      */
     public void setAllNodesSizes(Size s) {
-        
+        this.sizes.setAllNodesValues(s);
     }
 
     /**
@@ -363,7 +373,7 @@ public class Graph implements IGraph {
      * @param width new width of the edges
      */
     public void setAllEdgesWidths(Double width) {
-        
+        this.sizes.setAllEdgesValues(width);
     }
 
     /**
@@ -382,7 +392,12 @@ public class Graph implements IGraph {
      * @return the coordinates of the node
      */
     public Coord getNodePosition(INode n) {
-        return null;
+        Coord c = this.layout.getNodeValue(n);
+        if (c != null) {
+            return c;
+        } else {
+            return LayoutProperty.DEFAULT_NODE_POS;
+        }
     }
 
     /**
@@ -393,7 +408,12 @@ public class Graph implements IGraph {
      * @return the coordinates of the bends of the edge
      */
     public ArrayList<Coord> getEdgePosition(IEdge e) {
-        return null;
+        ArrayList<Coord> pos = this.layout.getEdgeValue(e);
+        if (pos != null) {
+            return pos;
+        } else {
+            return LayoutProperty.DEFAULT_EDGE_POS;
+        }
     }
 
     /**
@@ -403,7 +423,7 @@ public class Graph implements IGraph {
      * @param c new coordinates of the node
      */
     public void setNodePosition(INode n, Coord c) {
-        
+        this.layout.setNodeValue(n, c);
     }
 
     /**
@@ -414,7 +434,7 @@ public class Graph implements IGraph {
      * @param bends the bends of the edge
      */
     public void setEdgePosition(IEdge e, ArrayList<Coord> bends) {
-        
+        this.layout.setEdgeValue(e, bends);
     }
 
     /**
@@ -423,7 +443,7 @@ public class Graph implements IGraph {
      * @param c new coordinates of the nodes
      */
     public void setAllNodesPositions(Coord c) {
-        
+        this.layout.setAllNodesValues(c);
     }
 
     /**
@@ -433,7 +453,7 @@ public class Graph implements IGraph {
      * @param bends the bends of the edges
      */
     public void setAllEdgesPositions(ArrayList<Coord> bends) {
-        
+        this.layout.setAllEdgesValues(bends);
     }
 
     /**
@@ -448,7 +468,39 @@ public class Graph implements IGraph {
      *
      */
     public ArrayList<Coord> getBoundingBox() {
-        return null;
+
+        // cas vide
+        if (nodes == null || nodes.isEmpty()) {
+            ArrayList<Coord> boundingBox = new ArrayList<>();
+            boundingBox.add(new Coord(0, 0));
+            boundingBox.add(new Coord(1, 1));
+            return boundingBox;
+        }
+        
+        double minX = Double.MAX_VALUE;
+        double minY = Double.MAX_VALUE;
+        double maxX = -Double.MAX_VALUE;
+        double maxY = -Double.MAX_VALUE; 
+        
+        for (INode node : nodes) {
+            Coord c = getNodePosition(node);
+            if (c != null) {
+                if (c.getX() < minX) 
+                    minX = c.getX();
+                if (c.getY() < minY) 
+                    minY = c.getY();
+                if (c.getX() > maxX) 
+                    maxX = c.getX();
+                if (c.getY() > maxY) 
+                    maxY = c.getY();
+            }
+        }
+        
+
+        ArrayList<Coord> boundingBox = new ArrayList<>();
+        boundingBox.add(new Coord(minX - 10, minY - 10));
+        boundingBox.add(new Coord(maxX + 10, maxY + 10));
+        return boundingBox;
     }
 
     /**
@@ -467,7 +519,12 @@ public class Graph implements IGraph {
      * @return the color of the node
      */
     public Color getNodeColor(INode n) {
-        return null;
+        Color c = this.colors.getNodeValue(n);
+        if (c != null) {
+            return c;
+        } else {
+            return ColorProperty.DEFAULT_NODE_COL;
+        }
     }
 
     /**
@@ -477,7 +534,12 @@ public class Graph implements IGraph {
      * @return the color of the edge
      */
     public Color getEdgeColor(IEdge e) {
-        return null;
+        Color c = this.colors.getEdgeValue(e);
+        if (c != null) {
+            return c;
+        } else {
+            return ColorProperty.DEFAULT_EDGE_COL;
+        }
     }
 
     /**
@@ -487,7 +549,7 @@ public class Graph implements IGraph {
      * @param c new color of the node
      */
     public void setNodeColor(INode n, Color c) {
-        
+        this.colors.setNodeValue(n, c);
     }
 
     /**
@@ -497,7 +559,7 @@ public class Graph implements IGraph {
      * @param c the bends of the edge
      */
     public void setEdgeColor(IEdge e, Color c) {
-        
+        this.colors.setEdgeValue(e, c);
     }
 
     /**
@@ -506,7 +568,7 @@ public class Graph implements IGraph {
      * @param c the new color of the nodes
      */
     public void setAllNodesColors(Color c) {
-        
+        this.colors.setAllNodesValues(c);
     }
 
     /**
@@ -515,6 +577,7 @@ public class Graph implements IGraph {
      * @param c the new color of the edges
      */
     public void setAllEdgesColors(Color c) {
+        this.colors.setAllEdgesValues(c);
     }
 
     /**
