@@ -151,7 +151,7 @@ public class Graph implements IGraph {
     public ArrayList<INode> getNeighbors(INode n) {
         ArrayList<INode> neighbors = new ArrayList<>();
         // we traverse all the edges of our graph
-        for (IEdge e : this.Edges) {
+        for (IEdge e : this.edges) {
             if (e.source() == n) {
                 neighbors.add(e.target()); // if the node is the source, add the target
             } else if (e.target() == n) {

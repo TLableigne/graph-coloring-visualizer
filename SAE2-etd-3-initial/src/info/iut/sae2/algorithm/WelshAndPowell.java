@@ -14,7 +14,7 @@ public class WelshAndPowell {
     
 public static void execute(IGraph graph) {
         // je récupère mes noeuds 
-        ArrayList<INode> nodes = graph.getNodes(); //
+        ArrayList<INode> nodes = new ArrayList<>(graph.getNodes()); // erreur ici, avant je modifiais les noeuds originaux, maintenant je fais une copie
 
         // on trie les noeuds par ordre décroissant, du degré le plus grand au plus petit
         nodes.sort((n1, n2) -> Integer.compare(graph.degree(n2), graph.degree(n1)));

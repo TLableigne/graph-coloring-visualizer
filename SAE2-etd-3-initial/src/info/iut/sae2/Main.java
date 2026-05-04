@@ -10,7 +10,7 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 /**
  *
- * @author rbourqui
+ * @author rbourqui, zsabri, tlableigne
  */
 public class Main {
     
