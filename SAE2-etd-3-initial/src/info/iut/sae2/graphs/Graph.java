@@ -147,8 +147,18 @@ public class Graph implements IGraph {
      * @param n the node whose neighborhood is queried
      * @return the neighbors of the node
      */
+    @Override
     public ArrayList<INode> getNeighbors(INode n) {
-        return null;
+        ArrayList<INode> neighbors = new ArrayList<>();
+        // we traverse all the edges of our graph
+        for (IEdge e : this.Edges) {
+            if (e.source() == n) {
+                neighbors.add(e.target()); // if the node is the source, add the target
+            } else if (e.target() == n) {
+                neighbors.add(e.source()); // If the node is the target, add the source
+            }
+        }
+        return neighbors;
     }
 
     /**
@@ -267,8 +277,9 @@ public class Graph implements IGraph {
      * @param n the node whose degree is queried
      * @return the degree of the node
      */
+    @Override
     public int degree(INode n) {
-        return 0;
+        return getNeighbors(n).size(); // the degree is just the number of neighbors 
     }
 
     /**
