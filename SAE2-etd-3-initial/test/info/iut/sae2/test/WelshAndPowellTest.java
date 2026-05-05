@@ -9,6 +9,9 @@ import info.iut.sae2.graphs.Color;
 import info.iut.sae2.graphs.Graph;
 import info.iut.sae2.graphs.INode;
 
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 /**
  *
  * @author zsabri
