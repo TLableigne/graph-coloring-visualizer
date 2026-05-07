@@ -8,17 +8,18 @@ import info.iut.sae2.algorithm.WelshAndPowell;
 import info.iut.sae2.graphs.Color;
 import info.iut.sae2.graphs.Graph;
 import info.iut.sae2.graphs.INode;
+import info.iut.sae2.properties.ColorProperty;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
  *
- * @author zsabri
+ * @author zakariasabri
  */
 public class WelshAndPowellTest {
     @Test 
-    public void testGrapheTriangle() {
+    public void testGrapheTriangle() { // Si les tests ne passent pas il faut importer les 2 librairies necessaires à partir du fichier lib du dépot (junit-4.13.2.jar et hamcrest-core-1.3.jar)
         // we create a new graph
         Graph g = new Graph();
         
@@ -31,13 +32,15 @@ public class WelshAndPowellTest {
         g.addEdge(n2, n3);
         g.addEdge(n1, n3);
 
-        // we launch the welsh and powell algorithm
-        WelshAndPowell.execute(g);
+        // on instancie et récupere le colorPropety
+        WelshAndPowell wp = new WelshAndPowell();
+        ColorProperty computedColors = wp.apply(g, null);
 
         // verifications 
-        Color c1 = g.getNodeColor(n1);
-        Color c2 = g.getNodeColor(n2);
-        Color c3 = g.getNodeColor(n3);
+        //on cherche les couleurs dans le computed colors
+        Color c1 = computedColors.getNodeValue(n1);
+        Color c2 = computedColors.getNodeValue(n2);
+        Color c3 = computedColors.getNodeValue(n3);
 
         // we verify that we have the right colors 
         assertNotNull("Le noeud 1 devrait avoir une couleur", c1);

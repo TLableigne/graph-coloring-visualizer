@@ -12,7 +12,6 @@ import java.util.Map;
  * @author rbourqui
  */
 public interface Algorithm<T> {
-    
     /**
      * Compute the result of the algorithm and returns it.
      * @param g the graph on which the algorithm is applied

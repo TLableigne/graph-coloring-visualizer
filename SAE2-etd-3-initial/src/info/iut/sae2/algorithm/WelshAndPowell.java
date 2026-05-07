@@ -3,6 +3,7 @@ package info.iut.sae2.algorithm;
 import info.iut.sae2.graphs.IGraph;
 import info.iut.sae2.graphs.INode;
 import info.iut.sae2.graphs.Color;
+import info.iut.sae2.properties.ColorProperty;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,49 +11,52 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class WelshAndPowell {
+public class WelshAndPowell implements Algorithm<ColorProperty>{
     
-public static void execute(IGraph graph) {
-        // je récupère mes noeuds 
-        ArrayList<INode> nodes = new ArrayList<>(graph.getNodes()); // erreur ici, avant je modifiais les noeuds originaux, maintenant je fais une copie
-
-        // on trie les noeuds par ordre décroissant, du degré le plus grand au plus petit
+    /**
+     * This method
+     * @param graph
+     * @param parameters
+     * @return 
+     */
+    @Override
+    public ColorProperty apply(IGraph graph, Map<String, Object> parameters) {
+        // we get the nodes and sort them
+        ArrayList<INode> nodes = new ArrayList<>(graph.getNodes());
         nodes.sort((n1, n2) -> Integer.compare(graph.degree(n2), graph.degree(n1)));
 
-        // dictionnaire pour stoquer temporairement l’induce de couleur de chaque noeud
+        // temporary dictionnary for the colors indices
         Map<INode, Integer> colorIndices = new HashMap<>();
 
-        // boucle principale, on affecte chaque couleur à un noeud
         for (INode currentNode : nodes) {
-            
-            // on récuprére les couleurs déjà utilisées par les voisins directs 
             Set<Integer> usedColors = new HashSet<>();
-            ArrayList<INode> neighbors = graph.getNeighbors(currentNode);
             
-            for (INode neighbor : neighbors) {
+            for (INode neighbor : graph.getNeighbors(currentNode)) {
                 if (colorIndices.containsKey(neighbor)) {
                     usedColors.add(colorIndices.get(neighbor));
                 }
             }
 
-            // on trouve la plus petite couleur
             int colorIndex = 0;
             while (usedColors.contains(colorIndex)) {
                 colorIndex++;
             }
 
-            // on assigne cet index au noeud
             colorIndices.put(currentNode, colorIndex);
         }
 
-        // on convertit les entiers
-        applyColorsToGraph(graph, colorIndices);
+        // and finaly we return the colorProperty generated
+        return createColorProperty(colorIndices);
     }
+    
+    
+
 
     /**
-     * méthode pour transformer nos entiers en objet Color
+     * private method to transform our integers in a ColorProperty object
      */
-    public static void applyColorsToGraph(IGraph graph, Map<INode, Integer> colorIndices) {
+    private ColorProperty createColorProperty(Map<INode, Integer> colorIndices) {
+        ColorProperty resultProperty = new ColorProperty();
         // on défini une palette de couleur de base
         Color[] palette = {
             new Color(255, 0, 0, 255),    // rouge 0
@@ -65,17 +69,17 @@ public static void execute(IGraph graph) {
             new Color(255, 192, 203, 255) // rose 7
         };
 
-        // on applique ensuite la couleur sur le graphe en utilisant les propriétés igraph.setNodeColor
         for (Map.Entry<INode, Integer> entry : colorIndices.entrySet()) {
             INode node = entry.getKey();
             int index = entry.getValue();
             
-            // si le graphe nécessite plus de couleurs que la palette on boucle sur la palette avec un modulo
             Color actualColor = palette[index % palette.length];
             
-            // Maj de la couleur dans le graphe
-            graph.setNodeColor(node, actualColor);
+            // we stock the color in the ColorProperty
+            resultProperty.setNodeValue(node, actualColor);
         }
+        
+        return resultProperty;
     }
 
 
