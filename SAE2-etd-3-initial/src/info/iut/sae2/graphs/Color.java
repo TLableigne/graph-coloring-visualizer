@@ -6,7 +6,7 @@ package info.iut.sae2.graphs;
 
 /**
  *
- * @author rbourqui, zsabri, tlableigne
+ * @author rbourqui
  */
 public class Color {
     

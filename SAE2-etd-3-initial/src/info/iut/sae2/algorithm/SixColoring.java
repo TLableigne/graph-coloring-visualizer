@@ -27,7 +27,7 @@ public class SixColoring implements Algorithm<ColorProperty> {
         Stack<INode> destructionStack = new Stack<>();
         ArrayList<INode> activeNodes = new ArrayList<>(graph.getNodes());
         Map<INode, Integer> virtualDegrees = new HashMap<>();
-        
+
         for (INode node : activeNodes) {
             virtualDegrees.put(node, graph.degree(node));
         }
@@ -47,8 +47,8 @@ public class SixColoring implements Algorithm<ColorProperty> {
             }
 
             if (nodeToRemove == null) {
-                System.err.println("Error : The graph is not planar");
-                isPlanar = false; 
+                System.err.println("Erreur : Le graphe n'est pas planaire.");
+                isPlanar = false;
             } else {
                 activeNodes.remove(nodeToRemove);
                 destructionStack.push(nodeToRemove);
@@ -66,31 +66,33 @@ public class SixColoring implements Algorithm<ColorProperty> {
             return new ColorProperty();
         }
 
-        ColorProperty resultProperty = new ColorProperty();
+        Map<INode, Integer> colorIndices = new HashMap<>();
 
         while (!destructionStack.isEmpty()) {
             INode currentNode = destructionStack.pop();
-            ArrayList<Color> usedColors = new ArrayList<>();
-            
+            ArrayList<Integer> usedColors = new ArrayList<>();
+
             for (INode neighbor : graph.getNeighbors(currentNode)) {
-                Color neighborColor = resultProperty.getNodeValue(neighbor);
-                if (neighborColor != null) {
-                    usedColors.add(neighborColor);
+                if (colorIndices.containsKey(neighbor)) {
+                    usedColors.add(colorIndices.get(neighbor));
                 }
             }
 
-            Color chosenColor = null;
-            int c = 0;
-            
-            while (c < palette.length && chosenColor == null) {
-                Color potentialColor = palette[c];
-                if (!usedColors.contains(potentialColor)) {
-                    chosenColor = potentialColor;
-                }
-                c++;
+            int chosenColorIndex = 0;
+            while (usedColors.contains(chosenColorIndex)) {
+                chosenColorIndex++;
             }
 
-            resultProperty.setNodeValue(currentNode, chosenColor);
+            colorIndices.put(currentNode, chosenColorIndex);
+        }
+
+        ColorProperty resultProperty = new ColorProperty();
+
+        for (Map.Entry<INode, Integer> entry : colorIndices.entrySet()) {
+            INode node = entry.getKey();
+            int colorIndex = entry.getValue();
+            Color finalColor = palette[colorIndex % palette.length];
+            resultProperty.setNodeValue(node, finalColor);
         }
 
         return resultProperty;
