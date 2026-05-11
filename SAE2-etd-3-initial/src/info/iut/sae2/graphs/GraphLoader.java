@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author rbourqui, zsabri, tlableigne
+ * @author rbourqui
  */
 public class GraphLoader {
 

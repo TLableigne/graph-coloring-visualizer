@@ -11,6 +11,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ *
+ * @author zakariasabri
+ */
 public class WelshAndPowell implements Algorithm<ColorProperty>{
     
     /**
@@ -51,9 +55,10 @@ public class WelshAndPowell implements Algorithm<ColorProperty>{
     
     
 
-
     /**
      * private method to transform our integers in a ColorProperty object
+     * @param colorIndices
+     * @return a color proprety
      */
     private ColorProperty createColorProperty(Map<INode, Integer> colorIndices) {
         ColorProperty resultProperty = new ColorProperty();
