@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package info.iut.sae2.properties;
 
 import info.iut.sae2.graphs.IEdge;
@@ -33,7 +29,7 @@ public class SizeProperty extends AbstractProperty<Size, Double> {
     public SizeProperty() {
     }
 
-        /** 
+     /** 
      * Copy constructor. Each value of the given SizeProperty are copied before being associated to the nodes and edges.
      * 
      * @param size the SizeProperty to be copied

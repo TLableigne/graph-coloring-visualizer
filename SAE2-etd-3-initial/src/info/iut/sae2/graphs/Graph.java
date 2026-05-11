@@ -8,6 +8,7 @@ import info.iut.sae2.algorithm.WelshAndPowell;
 import info.iut.sae2.properties.ColorProperty;
 import info.iut.sae2.properties.LayoutProperty;
 import info.iut.sae2.properties.SizeProperty;
+import info.iut.sae2.algorithm.SixColoring;
 
 public class Graph implements IGraph {
 
@@ -645,8 +646,7 @@ public class Graph implements IGraph {
      */
     @Override
     public void welshAndPowell() {
-    // we create an instance of our algorithm
-    info.iut.sae2.algorithm.WelshAndPowell wp = new info.iut.sae2.algorithm.WelshAndPowell();  
+    WelshAndPowell wp = new info.iut.sae2.algorithm.WelshAndPowell();  
     ColorProperty computedColors = wp.apply(this, null);
     
     for (INode node : this.getNodes()) {
@@ -664,7 +664,11 @@ public class Graph implements IGraph {
      */  
     @Override
     public void sixColors() {
-        
+    SixColoring sc = new SixColoring();
+    ColorProperty results = sc.apply(this, null);
+    for (INode n : this.getNodes()) {
+        this.setNodeColor(n, results.getNodeValue(n));
+    }
     }
     
     /**
