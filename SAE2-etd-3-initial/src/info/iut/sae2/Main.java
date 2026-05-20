@@ -22,7 +22,7 @@ public class Main {
         // Apply a look'n feel
         UIManager.setLookAndFeel(new NimbusLookAndFeel());
 
-        GraphViewer myWindow = new GraphViewer("A simplistic graph viewer!");
+        GraphViewer myWindow = new GraphViewer("S2.02 Exploration Algorithme, SABRI Zakaria LABLEIGNE Thomas");
         myWindow.setVisible(true);
     }
 }
