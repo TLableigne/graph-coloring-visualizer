@@ -80,8 +80,7 @@ public class WelshAndPowellTest {
     }
     
     /**
-     * Tests a line graph (Path graph) to check color reusability.
-     * Graph: n1 - n2 - n3 - n4
+     * Tests a line graph to check color reusability.
      * n1 and n3 can share a color. n2 and n4 can share a color.
      */
     @Test
@@ -147,7 +146,6 @@ public class WelshAndPowellTest {
         INode n2 = g.addNode();
         INode n3 = g.addNode();
 
-        // connect center to all outer nodes
         g.addEdge(center, n1);
         g.addEdge(center, n2);
         g.addEdge(center, n3);
@@ -161,7 +159,6 @@ public class WelshAndPowellTest {
         Color c2 = computedColors.getNodeValue(n2);
         Color c3 = computedColors.getNodeValue(n3);
 
-        // the center must be different from all outer nodes
         assertFalse("Center must differ from n1", 
             cCenter.getR() == c1.getR() && cCenter.getG() == c1.getG() && cCenter.getB() == c1.getB());
         assertFalse("Center must differ from n2", 
@@ -169,10 +166,115 @@ public class WelshAndPowellTest {
         assertFalse("Center must differ from n3", 
             cCenter.getR() == c3.getR() && cCenter.getG() == c3.getG() && cCenter.getB() == c3.getB());
 
-        // outer nodes are not connected to each other, they should all share the same color
         assertTrue("All outer nodes should share the same color", 
             (c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB()) &&
             (c2.getR() == c3.getR() && c2.getG() == c3.getG() && c3.getB() == c3.getB()));
+    }
+    
+    
+    /**
+     * Tests a Complete Graph (K4).
+     * Every node is connected to every other node.
+     * An N-node complete graph must use exactly N different colors, no reuse is possible.
+     */
+    @Test
+    public void testCompleteGraph() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        INode n3 = g.addNode();
+        INode n4 = g.addNode();
+
+        g.addEdge(n1, n2); 
+        g.addEdge(n1, n3); 
+        g.addEdge(n1, n4);
+        g.addEdge(n2, n3); 
+        g.addEdge(n2, n4);
+        g.addEdge(n3, n4);
+
+        WelshAndPowell wp = new WelshAndPowell();
+        ColorProperty computedColors = wp.apply(g, null);
+
+        Color c1 = computedColors.getNodeValue(n1);
+        Color c2 = computedColors.getNodeValue(n2);
+        Color c3 = computedColors.getNodeValue(n3);
+        Color c4 = computedColors.getNodeValue(n4);
+
+        assertFalse("n1 and n2 must differ", c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB());
+        assertFalse("n1 and n3 must differ", c1.getR() == c3.getR() && c1.getG() == c3.getG() && c1.getB() == c3.getB());
+        assertFalse("n1 and n4 must differ", c1.getR() == c4.getR() && c1.getG() == c4.getG() && c1.getB() == c4.getB());
+        assertFalse("n2 and n3 must differ", c2.getR() == c3.getR() && c2.getG() == c3.getG() && c2.getB() == c3.getB());
+        assertFalse("n2 and n4 must differ", c2.getR() == c4.getR() && c2.getG() == c4.getG() && c2.getB() == c4.getB());
+        assertFalse("n3 and n4 must differ", c3.getR() == c4.getR() && c3.getG() == c4.getG() && c3.getB() == c4.getB());
+    }
+
+    /**
+     * Tests an Even Cycle Graph.
+     * An even cycle should perfectly alternate and only require exactly 2 colors.
+     */
+    @Test
+    public void testEvenCycleGraph() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        INode n3 = g.addNode();
+        INode n4 = g.addNode();
+
+        g.addEdge(n1, n2);
+        g.addEdge(n2, n3);
+        g.addEdge(n3, n4);
+        g.addEdge(n4, n1);
+
+        WelshAndPowell wp = new WelshAndPowell();
+        ColorProperty computedColors = wp.apply(g, null);
+
+        Color c1 = computedColors.getNodeValue(n1);
+        Color c2 = computedColors.getNodeValue(n2);
+        Color c3 = computedColors.getNodeValue(n3);
+        Color c4 = computedColors.getNodeValue(n4);
+
+        assertFalse("n1 and n2 must differ", c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB());
+        assertFalse("n2 and n3 must differ", c2.getR() == c3.getR() && c2.getG() == c3.getG() && c2.getB() == c3.getB());
+        
+        assertTrue("n1 and n3 should share the same color", 
+            c1.getR() == c3.getR() && c1.getG() == c3.getG() && c1.getB() == c3.getB());
+        assertTrue("n2 and n4 should share the same color", 
+            c2.getR() == c4.getR() && c2.getG() == c4.getG() && c2.getB() == c4.getB());
+    }
+
+    /**
+     * Tests an Odd Cycle Graph.
+     * An odd cycle cannot alternate perfectly and requires exactly 3 colors.
+     */
+    @Test
+    public void testOddCycleGraph() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        INode n3 = g.addNode();
+        INode n4 = g.addNode();
+        INode n5 = g.addNode();
+
+        g.addEdge(n1, n2);
+        g.addEdge(n2, n3);
+        g.addEdge(n3, n4);
+        g.addEdge(n4, n5);
+        g.addEdge(n5, n1);
+
+        WelshAndPowell wp = new WelshAndPowell();
+        ColorProperty computedColors = wp.apply(g, null);
+
+        Color c1 = computedColors.getNodeValue(n1);
+        Color c2 = computedColors.getNodeValue(n2);
+        Color c3 = computedColors.getNodeValue(n3);
+        Color c4 = computedColors.getNodeValue(n4);
+        Color c5 = computedColors.getNodeValue(n5);
+
+        assertFalse("n1 and n2 must differ", c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB());
+        assertFalse("n2 and n3 must differ", c2.getR() == c3.getR() && c2.getG() == c3.getG() && c2.getB() == c3.getB());
+        assertFalse("n3 and n4 must differ", c3.getR() == c4.getR() && c3.getG() == c4.getG() && c3.getB() == c4.getB());
+        assertFalse("n4 and n5 must differ", c4.getR() == c5.getR() && c4.getG() == c5.getG() && c4.getB() == c5.getB());
+        assertFalse("n5 and n1 must differ", c5.getR() == c1.getR() && c5.getG() == c1.getG() && c5.getB() == c1.getB());
     }
     
 }

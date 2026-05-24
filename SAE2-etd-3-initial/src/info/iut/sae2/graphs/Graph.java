@@ -1,7 +1,6 @@
 package info.iut.sae2.graphs;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 import info.iut.sae2.algorithm.WelshAndPowell;
@@ -9,7 +8,12 @@ import info.iut.sae2.properties.ColorProperty;
 import info.iut.sae2.properties.LayoutProperty;
 import info.iut.sae2.properties.SizeProperty;
 import info.iut.sae2.algorithm.SixColoring;
+import info.iut.sae2.algorithm.FiveColoring;
 
+/**
+ * 
+ * @author tlableigne, zakariasabri
+ */
 public class Graph implements IGraph {
 
     private final ArrayList<INode> nodes;
@@ -113,23 +117,36 @@ public class Graph implements IGraph {
     }
 
     /**
-     * Deletes a given node from the graph
+     * This method deletes a given node from the graph and removes all its connected edges
+     * to avoid dangling references.
      *
      * @param n the node to be deleted
      */
     @Override
     public void delNode(INode n) {
-        
+        if (n != null) {
+            this.nodes.remove(n);
+            
+            ArrayList<IEdge> edgesToDelete = new ArrayList<>();
+            for (IEdge e : this.edges) {
+                if (e.source() == n || e.target() == n) {
+                    edgesToDelete.add(e);
+                }
+            }
+            this.edges.removeAll(edgesToDelete);
+        }
     }
 
     /**
-     * Deletes a given edge from the graph
+     * this method deletes a given edge from the graph.
      *
      * @param e the edge to be deleted
      */
     @Override
     public void delEdge(IEdge e) {
-        
+        if (e != null) {
+            this.edges.remove(e);
+        }
     }
 
     /**
@@ -173,58 +190,88 @@ public class Graph implements IGraph {
     }
 
     /**
-     * Returns the sucessors of a given node in the graph
+     * This method returns the successors of a given node in the graph (targets of outgoing edges).
      *
      * @param n the node whose successors are queried
      * @return the successors of the node
      */
     @Override
     public ArrayList<INode> getSuccesors(INode n) {
-        return null;
+        ArrayList<INode> successors = new ArrayList<>();
+        for (IEdge e : this.edges) {
+            if (e.source() == n) {
+                successors.add(e.target());
+            }
+        }
+        return successors;
     }
 
     /**
-     * Returns the predecessors of a given node in the graph
+     * Returns the predecessors of a given node in the graph (sources of incoming edges).
      *
      * @param n the node whose predecessors are queried
      * @return the predecessors of the node
      */
     @Override
     public ArrayList<INode> getPredecessors(INode n) {
-        return null;
+        ArrayList<INode> predecessors = new ArrayList<>();
+        for (IEdge e : this.edges) {
+            if (e.target() == n) {
+                predecessors.add(e.source());
+            }
+        }
+        return predecessors;
     }
 
     /**
-     * Returns the indicent edges of a given node
+     * This method returns the incident edges of a given node (all connected edges, incoming or outgoing).
      *
      * @param n the node whose incident edges are queried
      * @return the incident edges of the node
      */
     @Override
     public ArrayList<IEdge> getInOutEdges(INode n) {
-        return null;
+        ArrayList<IEdge> incidentEdges = new ArrayList<>();
+        for (IEdge e : this.edges) {
+            if (e.source() == n || e.target() == n) {
+                incidentEdges.add(e);
+            }
+        }
+        return incidentEdges;
     }
 
     /**
-     * Returns the in-going edges of a given node in the graph
+     * Method who returns the in-going edges of a given node in the graph.
      *
-     * @param n the node whose in-going are queried
+     * @param n the node whose in-going edges are queried
      * @return the in-going edges of the node
      */
     @Override
     public ArrayList<IEdge> getInEdges(INode n) {
-        return null;
+        ArrayList<IEdge> inEdges = new ArrayList<>();
+        for (IEdge e : this.edges) {
+            if (e.target() == n) {
+                inEdges.add(e);
+            }
+        }
+        return inEdges;
     }
 
     /**
-     * Returns the out-going edges of a given node in the graph
+     * Returns the out-going edges of a given node in the graph.
      *
-     * @param n the node whose out-going are queried
+     * @param n the node whose out-going edges are queried
      * @return the out-going edges of the node
      */
     @Override
     public ArrayList<IEdge> getOutEdges(INode n) {
-        return null;
+        ArrayList<IEdge> outEdges = new ArrayList<>();
+        for (IEdge e : this.edges) {
+            if (e.source() == n) {
+                outEdges.add(e);
+            }
+        }
+        return outEdges;
     }
 
     /**
@@ -676,7 +723,12 @@ public class Graph implements IGraph {
      */  
     @Override
     public void fiveColors() {
-
+        FiveColoring fc = new FiveColoring();
+        ColorProperty results = fc.apply(this, null);
+        
+        for (INode n : this.getNodes()) {
+            this.setNodeColor(n, results.getNodeValue(n));
+        }
     }
 
 }
