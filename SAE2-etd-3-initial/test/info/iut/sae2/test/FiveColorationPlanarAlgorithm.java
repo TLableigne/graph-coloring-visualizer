@@ -1,6 +1,6 @@
 package info.iut.sae2.test;
 
-import info.iut.sae2.algorithm.FiveColoring;
+import info.iut.sae2.algorithm.FiveColorationPlanarAlgorithm;
 import info.iut.sae2.graphs.Color;
 import info.iut.sae2.graphs.Graph;
 import info.iut.sae2.graphs.INode;
@@ -10,7 +10,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 
-public class FiveColoringTest {
+public class FiveColorationPlanarAlgorithm {
 
     @Test
     public void testEmptyGraph() {
