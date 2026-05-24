@@ -36,35 +36,15 @@ public class WelshAndPowell implements Algorithm<ColorProperty> {
     }
 
     /**
-     * This method sorts the graph nodes in descending order of their degree using a manual
-     * selection sort. It use a precomputed map of degrees to avoid
-     * performance delays (because in some graphs we have a lot of nodes to sort).
+     * This method sorts the graph nodes in descending order of their degree using Java's native
+     * sort. It avoids performance delays (because in some graphs we have a lot of nodes to sort).
      *
      * @param graph the graph containing the nodes to sort
      * @return a new ArrayList of nodes sorted by descending degree
      */
     private ArrayList<INode> sortNodesByDegreeDesc(IGraph graph) {
         ArrayList<INode> nodes = new ArrayList<>(graph.getNodes());
-
-        Map<INode, Integer> nodeDegrees = new HashMap<>();
-        for (INode node : nodes) {
-            nodeDegrees.put(node, graph.degree(node));
-        }
-
-        for (int i = 0; i < nodes.size() - 1; i++) {
-            int maxIndex = i;
-
-            for (int j = i + 1; j < nodes.size(); j++) {
-                if (nodeDegrees.get(nodes.get(j)) > nodeDegrees.get(nodes.get(maxIndex))) {
-                    maxIndex = j;
-                }
-            }
-
-            INode temp = nodes.get(maxIndex);
-            nodes.set(maxIndex, nodes.get(i));
-            nodes.set(i, temp);
-        }
-
+        nodes.sort((n1, n2) -> Integer.compare(graph.degree(n2), graph.degree(n1)));
         return nodes;
     }
 

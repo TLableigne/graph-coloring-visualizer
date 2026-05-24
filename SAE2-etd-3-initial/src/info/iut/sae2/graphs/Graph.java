@@ -7,8 +7,9 @@ import info.iut.sae2.algorithm.WelshAndPowell;
 import info.iut.sae2.properties.ColorProperty;
 import info.iut.sae2.properties.LayoutProperty;
 import info.iut.sae2.properties.SizeProperty;
-import info.iut.sae2.algorithm.SixColoring;
-import info.iut.sae2.algorithm.FiveColoring;
+import info.iut.sae2.algorithm.SixColorationPlanarAlgorithm;
+import info.iut.sae2.algorithm.FiveColorationPlanarAlgorithm;
+import java.util.HashMap;
 
 /**
  * 
@@ -20,19 +21,22 @@ public class Graph implements IGraph {
     private final ArrayList<IEdge> edges;
     private final LayoutProperty layout;
     private final SizeProperty sizes;
-    private ColorProperty colors;
+    private final ColorProperty colors;
+    private final HashMap<INode, ArrayList<INode>> adjacencyList;
 
     /**
-     * Constructor
+     * Constructor who initializes a new empty Graph.
      */
-    public Graph(){
+    public Graph() {
         this.nodes = new ArrayList<>();
         this.edges = new ArrayList<>();
-
+        this.adjacencyList = new HashMap<>();
         this.layout = new LayoutProperty();
         this.sizes = new SizeProperty();
         this.colors = new ColorProperty();
     }
+    
+    
     /**
      * Instanciates an IGraph.
      * This method is used to create a new empty graph of the same
@@ -59,7 +63,7 @@ public class Graph implements IGraph {
     }
 
     /**
-     * Adds a new empty node to the graph and returns it.
+     * Méthod who adds a new empty node to the graph and initializes its adjacency list.
      *
      * @return the added node
      */
@@ -67,24 +71,24 @@ public class Graph implements IGraph {
     public INode addNode() {
         INode newNode = new Node();
         this.nodes.add(newNode);
+        this.adjacencyList.put(newNode, new ArrayList<>());
         return newNode;
-
     }
 
     /**
-     * Adds a given node to the graph and returns it.
+     * Adds a given node to the graph and initializes its adjacency list if not already present.
      *
      * @param n the node to add in the graph
-     * @return the added node
+     * @return the added node, or null if the node is already in the graph
      */
     @Override
     public INode addNode(INode n) {
-        if (this.nodes.add(n)) {
+        if (!this.nodes.contains(n)) {
+            this.nodes.add(n);
+            this.adjacencyList.put(n, new ArrayList<>());
             return n;
         }
-        else {
-            return null;
-        }
+        return null;
     }
 
     /**
@@ -99,26 +103,26 @@ public class Graph implements IGraph {
     }
 
     /**
-     * Adds an edge between the two given nodes and returns it.
+     * this method adds an edge between two given nodes and updates their adjacency lists.
      *
      * @param src source of the edge to add
      * @param tgt target of the edge to add
-     * @return the added edge
+     * @return the added edge, or null if the edge could not be added
      */
     @Override
     public IEdge addEdge(INode src, INode tgt) {
         Edge e = new Edge(src, tgt);
         if (this.edges.add(e)) {
+            this.adjacencyList.get(src).add(tgt);
+            this.adjacencyList.get(tgt).add(src);
             return e;
         }
-        else {
-            return null;
-        }
+        return null;
     }
 
     /**
-     * This method deletes a given node from the graph and removes all its connected edges
-     * to avoid dangling references.
+     * This method deletes a given node from the graph, removes it from adjacency lists,
+     * and deletes all incident edges.  
      *
      * @param n the node to be deleted
      */
@@ -126,7 +130,12 @@ public class Graph implements IGraph {
     public void delNode(INode n) {
         if (n != null) {
             this.nodes.remove(n);
-            
+            this.adjacencyList.remove(n);
+
+            for (ArrayList<INode> neighbors : this.adjacencyList.values()) {
+                neighbors.remove(n);
+            }
+
             ArrayList<IEdge> edgesToDelete = new ArrayList<>();
             for (IEdge e : this.edges) {
                 if (e.source() == n || e.target() == n) {
@@ -138,7 +147,7 @@ public class Graph implements IGraph {
     }
 
     /**
-     * this method deletes a given edge from the graph.
+     * this method deletes a given edge from the graph and updates the adjacency lists.
      *
      * @param e the edge to be deleted
      */
@@ -146,6 +155,16 @@ public class Graph implements IGraph {
     public void delEdge(IEdge e) {
         if (e != null) {
             this.edges.remove(e);
+            
+            INode src = e.source();
+            INode tgt = e.target();
+            
+            if (this.adjacencyList.containsKey(src)) {
+                this.adjacencyList.get(src).remove(tgt);
+            }
+            if (this.adjacencyList.containsKey(tgt)) {
+                this.adjacencyList.get(tgt).remove(src);
+            }
         }
     }
 
@@ -170,23 +189,15 @@ public class Graph implements IGraph {
     }
 
     /**
-     * Returns the neighbors  (successors and predecessors) of a given node in the graph
+     * Returns the neighbors (successors and predecessors) of a given node in the graph.
+     * Provides O(1) time complexity access via the adjacency list.
      *
      * @param n the node whose neighborhood is queried
-     * @return the neighbors of the node
+     * @return an ArrayList containing the neighbors of the node
      */
     @Override
     public ArrayList<INode> getNeighbors(INode n) {
-        ArrayList<INode> neighbors = new ArrayList<>();
-        // we traverse all the edges of our graph
-        for (IEdge e : this.edges) {
-            if (e.source() == n) {
-                neighbors.add(e.target()); // if the node is the source, add the target
-            } else if (e.target() == n) {
-                neighbors.add(e.source()); // If the node is the target, add the source
-            }
-        }
-        return neighbors;
+        return this.adjacencyList.getOrDefault(n, new ArrayList<>());
     }
 
     /**
@@ -711,7 +722,7 @@ public class Graph implements IGraph {
      */  
     @Override
     public void sixColors() {
-    SixColoring sc = new SixColoring();
+    SixColorationPlanarAlgorithm sc = new SixColorationPlanarAlgorithm();
     ColorProperty results = sc.apply(this, null);
     for (INode n : this.getNodes()) {
         this.setNodeColor(n, results.getNodeValue(n));
@@ -723,7 +734,7 @@ public class Graph implements IGraph {
      */  
     @Override
     public void fiveColors() {
-        FiveColoring fc = new FiveColoring();
+        FiveColorationPlanarAlgorithm fc = new FiveColorationPlanarAlgorithm();
         ColorProperty results = fc.apply(this, null);
         
         for (INode n : this.getNodes()) {
