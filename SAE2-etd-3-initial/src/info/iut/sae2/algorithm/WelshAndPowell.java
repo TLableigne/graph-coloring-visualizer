@@ -13,7 +13,6 @@ import java.util.Set;
 
 /**
  * Implementation of the Welsh and Powell graph coloring algorithm.
- *
  * @author zakariasabri & tlableigne
  */
 public class WelshAndPowell implements Algorithm<ColorProperty> {
@@ -114,14 +113,14 @@ public class WelshAndPowell implements Algorithm<ColorProperty> {
         ColorProperty resultProperty = new ColorProperty();
 
         Color[] palette = {
-            new Color(255, 0, 0, 255), // red 0
-            new Color(0, 0, 255, 255), // blue 1
-            new Color(0, 255, 0, 255), // green 2
-            new Color(255, 255, 0, 255), // yellow 3
-            new Color(255, 165, 0, 255), // orange 4
-            new Color(128, 0, 128, 255), // purple 5
-            new Color(0, 255, 255, 255), // cyan 6
-            new Color(255, 192, 203, 255) // rose 7
+            new Color(78, 121, 167, 255),  
+            new Color(242, 142, 43, 255),  
+            new Color(225, 87, 89, 255),  
+            new Color(118, 183, 178, 255), 
+            new Color(89, 161, 79, 255),   
+            new Color(237, 201, 72, 255),
+            new Color(176, 122, 161, 255), 
+            new Color(255, 157, 167, 255) 
         };
 
         for (Map.Entry<INode, Integer> entry : colorIndices.entrySet()) {

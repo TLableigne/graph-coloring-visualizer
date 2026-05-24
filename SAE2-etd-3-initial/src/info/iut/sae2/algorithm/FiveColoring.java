@@ -13,19 +13,21 @@ import java.util.Queue;
 import java.util.Stack;
 
 /**
- * Implementation of the 5-coloring algorithm for planar graphs.
- * @author zakariasabri
+ * Implementation of the 5-coloring algorithm.
+ * @author zakariasabri & tlableigne
  */
 public class FiveColoring implements Algorithm<ColorProperty> {
 
     private final Color[] palette = {
-        new Color(255, 0, 0, 255),    // red 0
-        new Color(0, 0, 255, 255),    // blue 1
-        new Color(0, 255, 0, 255),    // green 2
-        new Color(255, 255, 0, 255),  // yellow 3
-        new Color(255, 165, 0, 255)   // orange 4
-    };
-
+            new Color(118, 183, 178, 255), 
+            new Color(89, 161, 79, 255),
+            new Color(78, 121, 167, 255),  
+            new Color(242, 142, 43, 255),  
+            new Color(225, 87, 89, 255),     
+            new Color(237, 201, 72, 255),
+            new Color(176, 122, 161, 255), 
+            new Color(255, 157, 167, 255) 
+        };
     /**
      * Executes the 5-coloring algorithm on the targeted planar graph.
      *

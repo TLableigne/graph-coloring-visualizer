@@ -11,21 +11,23 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
- * Implementation of the 6-coloring algorithm for planar graphs.
+ * Implementation of the 6-coloring algorithm.
  * This 6 coloration algorithm uses a vertex reduction (destruction) phase using a stack,
- * followed by a sequential color assignment (reconstruction) phase.
- ** @author zakariasabri
+ * followed by a color assignment (reconstruction) phase.
+ ** @author zakariasabri & tlableigne
  */
 public class SixColoring implements Algorithm<ColorProperty> {
 
     private final Color[] palette = {
-        new Color(255, 0, 0, 255),    // red 0
-        new Color(0, 0, 255, 255),    // blue 1
-        new Color(0, 255, 0, 255),    // green 2
-        new Color(255, 255, 0, 255),  // yellow 3
-        new Color(255, 165, 0, 255),  // orange 4
-        new Color(128, 0, 128, 255)   // purple 5
-    };
+            new Color(78, 121, 167, 255),  
+            new Color(242, 142, 43, 255),  
+            new Color(225, 87, 89, 255),  
+            new Color(118, 183, 178, 255), 
+            new Color(89, 161, 79, 255),   
+            new Color(237, 201, 72, 255),
+            new Color(176, 122, 161, 255), 
+            new Color(255, 157, 167, 255) 
+        };
 
     /**
      * This method executes the 6 coloring algorithm on the targeted planar graph.
@@ -77,7 +79,7 @@ public class SixColoring implements Algorithm<ColorProperty> {
             }
 
             if (nodeToRemove == null) {
-                System.err.println("Erreur : Le graphe n'est pas planaire.");
+                System.err.println("Error : the graph isn't planar.");
                 isPlanar = false;
             } else {
                 activeNodes.remove(nodeToRemove);
