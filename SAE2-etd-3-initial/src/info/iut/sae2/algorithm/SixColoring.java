@@ -19,12 +19,12 @@ import java.util.Stack;
 public class SixColoring implements Algorithm<ColorProperty> {
 
     private final Color[] palette = {
-        new Color(255, 0, 0, 255),    // rouge 0
-        new Color(0, 0, 255, 255),    // bleu 1
-        new Color(0, 255, 0, 255),    // vert 2
-        new Color(255, 255, 0, 255),  // jaune 3
+        new Color(255, 0, 0, 255),    // red 0
+        new Color(0, 0, 255, 255),    // blue 1
+        new Color(0, 255, 0, 255),    // green 2
+        new Color(255, 255, 0, 255),  // yellow 3
         new Color(255, 165, 0, 255),  // orange 4
-        new Color(128, 0, 128, 255)   // violet 5
+        new Color(128, 0, 128, 255)   // purple 5
     };
 
     /**
