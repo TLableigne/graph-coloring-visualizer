@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 /**
@@ -144,6 +145,178 @@ public class GraphTest {
         assertFalse(c1.equals(c2));
         assertFalse(c1.equals(c3));
         assertFalse(c2.equals(c3));
+    }
+
+    @Test
+    public void testDelNodeAndDelEdge() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        INode n3 = g.addNode();
+        IEdge e1 = g.addEdge(n1, n2);
+        IEdge e2 = g.addEdge(n2, n3);
+
+        assertEquals(3, g.numberOfNodes());
+        assertEquals(2, g.numberOfEdges());
+
+        g.delEdge(e2);
+        assertEquals(3, g.numberOfNodes());
+        assertEquals(1, g.numberOfEdges());
+        assertFalse(g.getEdges().contains(e2));
+
+        g.delNode(n1);
+        assertEquals(2, g.numberOfNodes());
+        assertEquals(0, g.numberOfEdges());
+        assertFalse(g.getNodes().contains(n1));
+        assertFalse(g.getEdges().contains(e1));
+    }
+
+    @Test
+    public void testSuccessorsAndPredecessors() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        INode n3 = g.addNode();
+
+        g.addEdge(n1, n2);
+        g.addEdge(n2, n3);
+        g.addEdge(n1, n3);
+
+        ArrayList<INode> succ = g.getSuccesors(n1);
+        assertEquals(2, succ.size());
+        assertTrue(succ.contains(n2));
+        assertTrue(succ.contains(n3));
+
+        ArrayList<INode> pred = g.getPredecessors(n3);
+        assertEquals(2, pred.size());
+        assertTrue(pred.contains(n1));
+        assertTrue(pred.contains(n2));
+    }
+
+    @Test
+    public void testEdgeQueries() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        INode n3 = g.addNode();
+
+        IEdge e1 = g.addEdge(n1, n2);
+        IEdge e2 = g.addEdge(n2, n3);
+        IEdge e3 = g.addEdge(n1, n3);
+
+        ArrayList<IEdge> inOut = g.getInOutEdges(n2);
+        assertEquals(2, inOut.size());
+        assertTrue(inOut.contains(e1));
+        assertTrue(inOut.contains(e2));
+
+        ArrayList<IEdge> inEdges = g.getInEdges(n3);
+        assertEquals(2, inEdges.size());
+        assertTrue(inEdges.contains(e2));
+        assertTrue(inEdges.contains(e3));
+
+        ArrayList<IEdge> outEdges = g.getOutEdges(n1);
+        assertEquals(2, outEdges.size());
+        assertTrue(outEdges.contains(e1));
+        assertTrue(outEdges.contains(e3));
+    }
+
+    @Test
+    public void testUnimplementedMethods() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        assertNull(g.createGraph());
+        assertNull(g.copy());
+        assertNull(g.addEdge(null));
+        assertEquals(0, g.inDegree(n1));
+        assertEquals(0, g.outDegree(n2));
+        assertFalse(g.existEdge(n1, n2, false));
+        assertNull(g.getEdge(n1, n2, false));
+    }
+
+    @Test
+    public void testColorProperties() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        IEdge e = g.addEdge(n1, n2);
+
+        Color c1 = new Color(255, 0, 0);
+        g.setNodeColor(n1, c1);
+        assertEquals(c1, g.getNodeColor(n1));
+
+        Color c2 = new Color(0, 255, 0);
+        g.setEdgeColor(e, c2);
+        assertEquals(c2, g.getEdgeColor(e));
+
+        Color c3 = new Color(0, 0, 255);
+        g.setAllNodesColors(c3);
+        assertEquals(c3, g.getNodeColor(n1));
+        assertEquals(c3, g.getNodeColor(n2));
+
+        Color c4 = new Color(255, 255, 0);
+        g.setAllEdgesColors(c4);
+        assertEquals(c4, g.getEdgeColor(e));
+        assertNotNull(g.getColor());
+    }
+
+    @Test
+    public void testLayoutProperties() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        IEdge e = g.addEdge(n1, n2);
+
+        ArrayList<Coord> bends = new ArrayList<>();
+        bends.add(new Coord(10, 10));
+        g.setEdgePosition(e, bends);
+        assertEquals(1, g.getEdgePosition(e).size());
+
+        g.setAllNodesPositions(new Coord(5, 5));
+        assertEquals(5.0, g.getNodePosition(n1).getX(), 0.001);
+        assertEquals(5.0, g.getNodePosition(n2).getY(), 0.001);
+
+        ArrayList<Coord> newBends = new ArrayList<>();
+        newBends.add(new Coord(20, 20));
+        g.setAllEdgesPositions(newBends);
+        assertEquals(20.0, g.getEdgePosition(e).get(0).getX(), 0.001);
+        assertNotNull(g.getLayout());
+    }
+
+    @Test
+    public void testSixColors() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        INode n3 = g.addNode();
+        
+        g.addEdge(n1, n2);
+        g.addEdge(n2, n3);
+        g.addEdge(n1, n3);
+        
+        g.sixColors();
+        
+        assertNotNull(g.getNodeColor(n1));
+        assertNotNull(g.getNodeColor(n2));
+        assertNotNull(g.getNodeColor(n3));
+    }
+
+    @Test
+    public void testFiveColors() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        INode n3 = g.addNode();
+        
+        g.addEdge(n1, n2);
+        g.addEdge(n2, n3);
+        g.addEdge(n1, n3);
+        
+        g.fiveColors();
+        
+        assertNotNull(g.getNodeColor(n1));
+        assertNotNull(g.getNodeColor(n2));
+        assertNotNull(g.getNodeColor(n3));
     }
 
 }
