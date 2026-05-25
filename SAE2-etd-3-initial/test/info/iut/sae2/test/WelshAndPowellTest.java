@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 /**
  * Test class for the Welsh and Powell Algorithm
  *
- * @author zakariasabri
+ * @author zakariasabri & tlebleigne
  */
 public class WelshAndPowellTest {
 

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
 * Tests for the SixColoration Algorithm
-* @author zakariasabri
+* @author zakariasabri & tlableigne
 */
 public class SixColorationPlanarAlgorithmTest {
 

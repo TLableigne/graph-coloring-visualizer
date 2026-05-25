@@ -18,6 +18,7 @@ import org.junit.Test;
  *
  * This class contains unit tests that check the main behaviour of the Graph
  * class.
+ * @authors zakariasabri & tlableigne
  */
 public class GraphTest {
 

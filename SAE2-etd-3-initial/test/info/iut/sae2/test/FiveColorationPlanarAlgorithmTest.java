@@ -6,11 +6,10 @@ import info.iut.sae2.properties.ColorProperty;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import java.util.ArrayList;
 
 /**
 * Tests for the FiveColoration Algorithm
-* @author zakariasabri
+* @author zakariasabri & tlableigne
 */
 public class FiveColorationPlanarAlgorithmTest {
 
