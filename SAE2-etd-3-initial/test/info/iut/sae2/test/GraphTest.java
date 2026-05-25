@@ -14,19 +14,24 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 /**
- * Test class for the Graph core data structure.
- * Verifies all graph manipulation and querying functionalities.
+ * Test class for the Graph implementation.
+ *
+ * This class contains unit tests that check the main behaviour of the Graph
+ * class.
  */
 public class GraphTest {
 
     /**
-     * Tests the addition of nodes (via instance or automatic creation) and edges.
-     * Verifies that counters are properly incremented and edge source/target links are correct.
+     * Tests node and edge creation.
+     *
+     * This test verifies that nodes and edges are correctly added to the graph
+     * and that the created edge links the expected source and target nodes.
      */
     @Test
     public void testAddNodesAndEdges() {
         Graph g = new Graph();
         assertEquals(0, g.numberOfNodes());
+
         INode n1 = g.addNode();
         assertNotNull(n1);
         assertEquals(1, g.numberOfNodes());
@@ -46,7 +51,10 @@ public class GraphTest {
     }
 
     /**
-     * Tests retrieving the neighbors of a given node and calculating its total degree.
+     * Tests neighbours and degree on a simple graph.
+     *
+     * This test checks that getNeighbors returns the correct adjacent nodes
+     * and that degree returns the expected number of neighbours.
      */
     @Test
     public void testNeighborsAndDegree() {
@@ -74,6 +82,7 @@ public class GraphTest {
     public void testSizeDefaultsAndSetters() {
         Graph g = new Graph();
         INode n = g.addNode();
+
         Size defaultSize = g.getNodeSize(n);
         assertEquals(2.0, defaultSize.getW(), 0.001);
         assertEquals(2.0, defaultSize.getH(), 0.001);
@@ -90,7 +99,10 @@ public class GraphTest {
     }
 
     /**
-     * Tests the default thickness of edges and its individual or global modification.
+     * Tests default edge width and width setters.
+     *
+     * This test checks that a new edge has the default width and that the
+     * width setters correctly update one edge or all edges.
      */
     @Test
     public void testEdgeWidthDefaultsAndSetters() {
@@ -98,9 +110,8 @@ public class GraphTest {
         INode n1 = g.addNode();
         INode n2 = g.addNode();
         IEdge e = g.addEdge(n1, n2);
-        double number = 1.0;
 
-        assertEquals(number, g.getEdgeWidth(e), 0.001);
+        assertEquals(1.0, g.getEdgeWidth(e), 0.001);
 
         g.setEdgeWidth(e, 2.5);
         assertEquals(2.5, g.getEdgeWidth(e), 0.001);
@@ -129,6 +140,7 @@ public class GraphTest {
         ArrayList<Coord> bbox = g.getBoundingBox();
         Coord topLeft = bbox.get(0);
         Coord bottomRight = bbox.get(1);
+
         assertEquals(0.0, topLeft.getX(), 0.001);
         assertEquals(10.0, topLeft.getY(), 0.001);
         assertEquals(40.0, bottomRight.getX(), 0.001);
@@ -197,7 +209,10 @@ public class GraphTest {
     }
 
     /**
-     * Tests retrieving predecessor and successor nodes to evaluate directed graph traversal.
+     * Tests successors and predecessors.
+     *
+     * This test checks that the graph correctly returns the outgoing and
+     * incoming neighbours of a node.
      */
     @Test
     public void testSuccessorsAndPredecessors() {
@@ -222,7 +237,10 @@ public class GraphTest {
     }
 
     /**
-     * Tests conditionally retrieving incoming, outgoing, or both types of edges for a specific node.
+     * Tests edge query methods.
+     *
+     * This test verifies that the methods returning incoming, outgoing and
+     * incident edges give the expected results.
      */
     @Test
     public void testEdgeQueries() {
@@ -256,21 +274,33 @@ public class GraphTest {
      * to avoid unexpected exceptions in the existing logic.
      */
     @Test
-    public void testUnimplementedMethods() {
+    public void testImplementedMethods() {
         Graph g = new Graph();
         INode n1 = g.addNode();
         INode n2 = g.addNode();
-        assertNull(g.createGraph());
-        assertNull(g.copy());
+
+        assertNotNull(g.createGraph());
+        assertNotNull(g.copy());
+
         assertNull(g.addEdge(null));
+
         assertEquals(0, g.inDegree(n1));
         assertEquals(0, g.outDegree(n2));
+
         assertFalse(g.existEdge(n1, n2, false));
         assertNull(g.getEdge(n1, n2, false));
+
+        IEdge e = g.addEdge(n1, n2);
+        assertNotNull(e);
+        assertTrue(g.existEdge(n1, n2, false));
+        assertNotNull(g.getEdge(n1, n2, false));
     }
 
     /**
-     * Tests advanced layout properties, such as positioning edges using multiple bend points.
+     * Tests layout properties for nodes and edges.
+     *
+     * This test verifies that node positions and edge bend points are stored
+     * and updated correctly.
      */
     @Test
     public void testLayoutProperties() {
@@ -296,7 +326,10 @@ public class GraphTest {
     }
 
     /**
-     * Tests the execution and valid color assignment via the 6-color planar utility method.
+     * Tests the integration of the 6-color algorithm.
+     *
+     * This test checks that sixColors assigns a color to each node of a small
+     * graph.
      */
     @Test
     public void testSixColors() {
@@ -317,7 +350,10 @@ public class GraphTest {
     }
 
     /**
-     * Tests the execution and valid color assignment via the 5-color planar utility method.
+     * Tests the integration of the 5-color algorithm.
+     *
+     * This test checks that fiveColors assigns a color to each node of a small
+     * graph.
      */
     @Test
     public void testFiveColors() {

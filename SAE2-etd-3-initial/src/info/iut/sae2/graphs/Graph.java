@@ -1,15 +1,14 @@
 package info.iut.sae2.graphs;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 
 import info.iut.sae2.algorithm.WelshAndPowell;
+import info.iut.sae2.algorithm.SixColorationPlanarAlgorithm;
+import info.iut.sae2.algorithm.FiveColorationPlanarAlgorithm;
 import info.iut.sae2.properties.ColorProperty;
 import info.iut.sae2.properties.LayoutProperty;
 import info.iut.sae2.properties.SizeProperty;
-import info.iut.sae2.algorithm.SixColorationPlanarAlgorithm;
-import info.iut.sae2.algorithm.FiveColorationPlanarAlgorithm;
-import java.util.HashMap;
 
 /**
  * 
@@ -35,8 +34,7 @@ public class Graph implements IGraph {
         this.sizes = new SizeProperty();
         this.colors = new ColorProperty();
     }
-    
-    
+
     /**
      * Instanciates an IGraph.
      * This method is used to create a new empty graph of the same
@@ -46,10 +44,9 @@ public class Graph implements IGraph {
      */
     @Override
     public Graph createGraph() {
-        return null;
+        return new Graph();
     }
 
-    
     /**
      * Instanciates an IGraph.
      * This method is used to create a new copy graph of the same
@@ -59,11 +56,35 @@ public class Graph implements IGraph {
      */
     @Override
     public Graph copy() {
-        return null;
+        Graph copy = new Graph();
+        HashMap<INode, INode> nodeMap = new HashMap<>();
+
+        for (INode node : this.nodes) {
+            INode newNode = copy.addNode();
+            nodeMap.put(node, newNode);
+
+            copy.setNodePosition(newNode, this.getNodePosition(node));
+            copy.setNodeSize(newNode, this.getNodeSize(node));
+            copy.setNodeColor(newNode, this.getNodeColor(node));
+        }
+
+        for (IEdge edge : this.edges) {
+            INode newSrc = nodeMap.get(edge.source());
+            INode newTgt = nodeMap.get(edge.target());
+            IEdge newEdge = copy.addEdge(newSrc, newTgt);
+
+            if (newEdge != null) {
+                copy.setEdgePosition(newEdge, this.getEdgePosition(edge));
+                copy.setEdgeWidth(newEdge, this.getEdgeWidth(edge));
+                copy.setEdgeColor(newEdge, this.getEdgeColor(edge));
+            }
+        }
+
+        return copy;
     }
 
     /**
-     * Méthod who adds a new empty node to the graph and initializes its adjacency list.
+     * Method who adds a new empty node to the graph and initializes its adjacency list.
      *
      * @return the added node
      */
@@ -83,6 +104,10 @@ public class Graph implements IGraph {
      */
     @Override
     public INode addNode(INode n) {
+        if (n == null) {
+            return null;
+        }
+
         if (!this.nodes.contains(n)) {
             this.nodes.add(n);
             this.adjacencyList.put(n, new ArrayList<>());
@@ -92,18 +117,21 @@ public class Graph implements IGraph {
     }
 
     /**
-     * Adds a given edge and returns an edge to the graph and returns it.
+     * Adds a given edge to the graph and returns it.
      *
      * @param e the edge to add
-     * @return the added edge
+     * @return the added edge, or null if the edge could not be added
      */
     @Override
     public IEdge addEdge(IEdge e) {
-        return null;
+        if (e == null) {
+            return null;
+        }
+        return this.addEdge(e.source(), e.target());
     }
 
     /**
-     * this method adds an edge between two given nodes and updates their adjacency lists.
+     * This method adds an edge between two given nodes and updates their adjacency lists.
      *
      * @param src source of the edge to add
      * @param tgt target of the edge to add
@@ -111,18 +139,28 @@ public class Graph implements IGraph {
      */
     @Override
     public IEdge addEdge(INode src, INode tgt) {
-        Edge e = new Edge(src, tgt);
-        if (this.edges.add(e)) {
-            this.adjacencyList.get(src).add(tgt);
-            this.adjacencyList.get(tgt).add(src);
-            return e;
+        if (src == null || tgt == null) {
+            return null;
         }
-        return null;
+
+        if (!this.nodes.contains(src) || !this.nodes.contains(tgt)) {
+            return null;
+        }
+
+        if (this.existEdge(src, tgt, false)) {
+            return null;
+        }
+
+        IEdge e = new Edge(src, tgt);
+        this.edges.add(e);
+        this.adjacencyList.get(src).add(tgt);
+        this.adjacencyList.get(tgt).add(src);
+        return e;
     }
 
     /**
      * This method deletes a given node from the graph, removes it from adjacency lists,
-     * and deletes all incident edges.  
+     * and deletes all incident edges.
      *
      * @param n the node to be deleted
      */
@@ -147,7 +185,7 @@ public class Graph implements IGraph {
     }
 
     /**
-     * this method deletes a given edge from the graph and updates the adjacency lists.
+     * This method deletes a given edge from the graph and updates the adjacency lists.
      *
      * @param e the edge to be deleted
      */
@@ -155,10 +193,10 @@ public class Graph implements IGraph {
     public void delEdge(IEdge e) {
         if (e != null) {
             this.edges.remove(e);
-            
+
             INode src = e.source();
             INode tgt = e.target();
-            
+
             if (this.adjacencyList.containsKey(src)) {
                 this.adjacencyList.get(src).remove(tgt);
             }
@@ -336,7 +374,7 @@ public class Graph implements IGraph {
      */
     @Override
     public int inDegree(INode n) {
-        return 0;
+        return this.getPredecessors(n).size();
     }
 
     /**
@@ -348,7 +386,7 @@ public class Graph implements IGraph {
      */
     @Override
     public int outDegree(INode n) {
-        return 0;
+        return this.getSuccesors(n).size();
     }
 
     /**
@@ -359,7 +397,7 @@ public class Graph implements IGraph {
      */
     @Override
     public int degree(INode n) {
-        return getNeighbors(n).size(); // the degree is just the number of neighbors 
+        return getNeighbors(n).size();
     }
 
     /**
@@ -368,27 +406,39 @@ public class Graph implements IGraph {
      *
      * @param src the source node of the putative edge
      * @param tgt the target node of the putative edge
-     * @param oriented if true, the function consider the edge as directed
+     * @param oriented if true, the function considers the edge as directed
      * (arc), and undirected otherwise
-     * @return true if the Iedge exists, false otherwise
+     * @return true if the edge exists, false otherwise
      */
     @Override
     public boolean existEdge(INode src, INode tgt, boolean oriented) {
-        return false;
+        return this.getEdge(src, tgt, oriented) != null;
     }
 
     /**
      * Returns an existing edge between the source and target nodes while
-     * considering the orientation of not.
+     * considering the orientation or not.
      *
      * @param src the source node of the putative edge
      * @param tgt the target node of the putative edge
-     * @param oriented if true, the function consider the edge as directed
+     * @param oriented if true, the function considers the edge as directed
      * (arc), and undirected otherwise
-     * @return the edge if the Iedge exists, null otherwise
+     * @return the edge if the edge exists, null otherwise
      */
     @Override
     public IEdge getEdge(INode src, INode tgt, boolean oriented) {
+        for (IEdge e : this.edges) {
+            if (oriented) {
+                if (e.source() == src && e.target() == tgt) {
+                    return e;
+                }
+            } else {
+                if ((e.source() == src && e.target() == tgt)
+                        || (e.source() == tgt && e.target() == src)) {
+                    return e;
+                }
+            }
+        }
         return null;
     }
 
@@ -463,7 +513,7 @@ public class Graph implements IGraph {
      */
     @Override
     public void setAllNodesSizes(Size s) {
-        for (INode n : this.nodes) {    // we force the change of all the graph nodes
+        for (INode n : this.nodes) {
             this.setNodeSize(n, s);
         }
     }
@@ -475,7 +525,7 @@ public class Graph implements IGraph {
      */
     @Override
     public void setAllEdgesWidths(Double width) {
-        for (IEdge e : this.edges) {        // we force the changes of all the edges of the graph
+        for (IEdge e : this.edges) {
             this.setEdgeWidth(e, width);
         }
     }
@@ -553,8 +603,8 @@ public class Graph implements IGraph {
      */
     @Override
     public void setAllNodesPositions(Coord c) {
-        for (INode n : this.getNodes()) {
-            this.layout.setNodeValue(n, c);
+        for (INode n : this.nodes) {
+            this.setNodePosition(n, c);
         }
     }
 
@@ -566,52 +616,53 @@ public class Graph implements IGraph {
      */
     @Override
     public void setAllEdgesPositions(ArrayList<Coord> bends) {
-        for (IEdge e : this.getEdges()) {
-            this.layout.setEdgeValue(e, bends);
+        for (IEdge e : this.edges) {
+            this.setEdgePosition(e, bends);
         }
     }
 
     /**
-     * Returns the coordinates of the bouding box of the graph drawing. The
-     * bouding box of a drawing of a graph is the minimum rectangle such that
+     * Returns the coordinates of the bounding box of the graph drawing. The
+     * bounding box of a drawing of a graph is the minimum rectangle such that
      * all nodes and edges of the graph are inside the rectangle. Please remind
      * that the y-axis is oriented toward the bottom.
      *
      * @return an ArrayList containing the coordinates of the top-left corner of
-     * the bonding box (at the first index in the ArrayList) and the coordinates
+     * the bounding box (at the first index in the ArrayList) and the coordinates
      * of the bottom-right corner of the bounding box (second index)
      *
      */
     @Override
     public ArrayList<Coord> getBoundingBox() {
-
-        // cas vide
-        if (nodes == null || nodes.isEmpty()) {
+        if (nodes.isEmpty()) {
             ArrayList<Coord> boundingBox = new ArrayList<>();
             boundingBox.add(new Coord(0, 0));
             boundingBox.add(new Coord(1, 1));
             return boundingBox;
         }
-        
+
         double minX = Double.MAX_VALUE;
         double minY = Double.MAX_VALUE;
         double maxX = -Double.MAX_VALUE;
-        double maxY = -Double.MAX_VALUE; 
-        
+        double maxY = -Double.MAX_VALUE;
+
         for (INode node : nodes) {
             Coord c = getNodePosition(node);
             if (c != null) {
-                if (c.getX() < minX) 
+                if (c.getX() < minX) {
                     minX = c.getX();
-                if (c.getY() < minY) 
+                }
+                if (c.getY() < minY) {
                     minY = c.getY();
-                if (c.getX() > maxX) 
+                }
+                if (c.getX() > maxX) {
                     maxX = c.getX();
-                if (c.getY() > maxY) 
+                }
+                if (c.getY() > maxY) {
                     maxY = c.getY();
+                }
             }
         }
-        
 
         ArrayList<Coord> boundingBox = new ArrayList<>();
         boundingBox.add(new Coord(minX - 10, minY - 10));
@@ -676,7 +727,7 @@ public class Graph implements IGraph {
      * Set the color of a given edge in the graph.
      *
      * @param e the edge of interest
-     * @param c the bends of the edge
+     * @param c the new color of the edge
      */
     @Override
     public void setEdgeColor(IEdge e, Color c) {
@@ -690,7 +741,9 @@ public class Graph implements IGraph {
      */
     @Override
     public void setAllNodesColors(Color c) {
-        this.colors.setAllNodesValues(c);
+        for (INode n : this.nodes) {
+            this.setNodeColor(n, c);
+        }
     }
 
     /**
@@ -700,50 +753,56 @@ public class Graph implements IGraph {
      */
     @Override
     public void setAllEdgesColors(Color c) {
-        this.colors.setAllEdgesValues(c);
+        for (IEdge e : this.edges) {
+            this.setEdgeColor(e, c);
+        }
     }
 
     /**
-     * get the nodes with the welsh and powell algorithm
+     * Colors the nodes with the Welsh and Powell algorithm.
      */
     @Override
     public void welshAndPowell() {
-    WelshAndPowell wp = new info.iut.sae2.algorithm.WelshAndPowell();  
-    ColorProperty computedColors = wp.apply(this, null);
-    
-    for (INode node : this.getNodes()) {
+        WelshAndPowell wp = new WelshAndPowell();
+        ColorProperty computedColors = wp.apply(this, null);
+
+        for (INode node : this.getNodes()) {
             Color newColor = computedColors.getNodeValue(node);
             if (newColor != null) {
                 this.setNodeColor(node, newColor);
             }
         }
-    
-    
     }
-    
+
     /**
-     * Color the nodes with a 6 colors algorithm (only for planar graphs)
-     */  
+     * Colors the nodes with a 6 colors algorithm (only for planar graphs).
+     */
     @Override
     public void sixColors() {
-    SixColorationPlanarAlgorithm sc = new SixColorationPlanarAlgorithm();
-    ColorProperty results = sc.apply(this, null);
-    for (INode n : this.getNodes()) {
-        this.setNodeColor(n, results.getNodeValue(n));
+        SixColorationPlanarAlgorithm sc = new SixColorationPlanarAlgorithm();
+        ColorProperty results = sc.apply(this, null);
+
+        for (INode n : this.getNodes()) {
+            Color color = results.getNodeValue(n);
+            if (color != null) {
+                this.setNodeColor(n, color);
+            }
+        }
     }
-    }
-    
+
     /**
-     * Color the nodes with a 5 colors algorithm (only for planar graphs)
-     */  
+     * Colors the nodes with a 5 colors algorithm (only for planar graphs).
+     */
     @Override
     public void fiveColors() {
         FiveColorationPlanarAlgorithm fc = new FiveColorationPlanarAlgorithm();
         ColorProperty results = fc.apply(this, null);
-        
+
         for (INode n : this.getNodes()) {
-            this.setNodeColor(n, results.getNodeValue(n));
+            Color color = results.getNodeValue(n);
+            if (color != null) {
+                this.setNodeColor(n, color);
+            }
         }
     }
-
 }

@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 /**
  * Test class for the Welsh and Powell Algorithm
- * 
+ *
  * @author zakariasabri
  */
 public class WelshAndPowellTest {
@@ -78,14 +78,14 @@ public class WelshAndPowellTest {
         assertNotNull("Node 1 should have a color", c1);
 
         assertTrue("All disconnected nodes should share the exact same first color",
-                (c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB()) &&
-                        (c2.getR() == c3.getR() && c2.getG() == c3.getG() && c2.getB() == c3.getB()));
+                (c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB())
+                && (c2.getR() == c3.getR() && c2.getG() == c3.getG() && c2.getB() == c3.getB()));
 
     }
 
     /**
-     * Tests a line graph to check color reusability.
-     * n1 and n3 can share a color. n2 and n4 can share a color.
+     * Tests a line graph to check color reusability. n1 and n3 can share a
+     * color. n2 and n4 can share a color.
      */
     @Test
     public void testLineGraphReusability() {
@@ -119,8 +119,8 @@ public class WelshAndPowellTest {
     }
 
     /**
-     * Tests an empty graph to ensure the algorithm does not crash.
-     * It should simply return an empty ColorProperty without throwing exceptions.
+     * Tests an empty graph to ensure the algorithm does not crash. It should
+     * simply return an empty ColorProperty without throwing exceptions.
      */
     @Test
     public void testEmptyGraph() {
@@ -170,13 +170,12 @@ public class WelshAndPowellTest {
                 cCenter.getR() == c3.getR() && cCenter.getG() == c3.getG() && cCenter.getB() == c3.getB());
 
         assertTrue("All outer nodes should share the same color",
-                (c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB()) &&
-                        (c2.getR() == c3.getR() && c2.getG() == c3.getG() && c3.getB() == c3.getB()));
+                (c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB())
+                && (c2.getR() == c3.getR() && c2.getG() == c3.getG() && c3.getB() == c3.getB()));
     }
 
     /**
-     * Tests a Complete Graph (K4).
-     * Every node is connected to every other node.
+     * Tests a Complete Graph (K4). Every node is connected to every other node.
      * An N-node complete graph must use exactly N different colors, no reuse is
      * possible.
      */
@@ -218,8 +217,8 @@ public class WelshAndPowellTest {
     }
 
     /**
-     * Tests an Even Cycle Graph.
-     * An even cycle should perfectly alternate and only require exactly 2 colors.
+     * Tests an Even Cycle Graph. An even cycle should perfectly alternate and
+     * only require exactly 2 colors.
      */
     @Test
     public void testEvenCycleGraph() {
@@ -242,10 +241,8 @@ public class WelshAndPowellTest {
         Color c3 = computedColors.getNodeValue(n3);
         Color c4 = computedColors.getNodeValue(n4);
 
-        assertFalse("n1 and n2 must differ",
-                c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB());
-        assertFalse("n2 and n3 must differ",
-                c2.getR() == c3.getR() && c2.getG() == c3.getG() && c2.getB() == c3.getB());
+        assertFalse("n1 and n2 must differ", c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB());
+        assertFalse("n2 and n3 must differ", c2.getR() == c3.getR() && c2.getG() == c3.getG() && c2.getB() == c3.getB());
 
         assertTrue("n1 and n3 should share the same color",
                 c1.getR() == c3.getR() && c1.getG() == c3.getG() && c1.getB() == c3.getB());
@@ -254,8 +251,8 @@ public class WelshAndPowellTest {
     }
 
     /**
-     * Tests an Odd Cycle Graph.
-     * An odd cycle cannot alternate perfectly and requires exactly 3 colors.
+     * Tests an Odd Cycle Graph. An odd cycle cannot alternate perfectly and
+     * requires exactly 3 colors.
      */
     @Test
     public void testOddCycleGraph() {
@@ -291,6 +288,87 @@ public class WelshAndPowellTest {
                 c4.getR() == c5.getR() && c4.getG() == c5.getG() && c4.getB() == c5.getB());
         assertFalse("n5 and n1 must differ",
                 c5.getR() == c1.getR() && c5.getG() == c1.getG() && c5.getB() == c1.getB());
+    }
+
+    /**
+     * Tests that every adjacent pair of nodes receives different colors on a
+     * larger connected graph.
+     *
+     * Expected result: all adjacent nodes must have different colors and every
+     * node must receive a valid color.
+     */
+    @Test
+    public void testGlobalAdjacencyConstraint() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        INode n3 = g.addNode();
+        INode n4 = g.addNode();
+        INode n5 = g.addNode();
+        INode n6 = g.addNode();
+
+        g.addEdge(n1, n2);
+        g.addEdge(n2, n3);
+        g.addEdge(n3, n4);
+        g.addEdge(n4, n5);
+        g.addEdge(n5, n6);
+        g.addEdge(n6, n1);
+        g.addEdge(n1, n4);
+        g.addEdge(n2, n5);
+
+        WelshAndPowell wp = new WelshAndPowell();
+        ColorProperty computedColors = wp.apply(g, null);
+
+        for (INode node : g.getNodes()) {
+            Color nodeColor = computedColors.getNodeValue(node);
+            assertNotNull("Each node must receive a color", nodeColor);
+
+            for (INode neighbor : g.getNeighbors(node)) {
+                Color neighborColor = computedColors.getNodeValue(neighbor);
+                assertNotNull(neighborColor);
+                assertFalse("Adjacent nodes must not share the same color",
+                        nodeColor.getR() == neighborColor.getR()
+                        && nodeColor.getG() == neighborColor.getG()
+                        && nodeColor.getB() == neighborColor.getB());
+            }
+        }
+    }
+
+    /**
+     * Tests a small cycle graph to verify the number of used colors remains
+     * reasonable for Welsh and Powell on a simple structure.
+     *
+     * Expected result: every node must receive a color and the total number of
+     * distinct colors used by the algorithm must stay bounded on this graph.
+     */
+    @Test
+    public void testColorCountBoundOnSmallGraph() {
+        Graph g = new Graph();
+        INode n1 = g.addNode();
+        INode n2 = g.addNode();
+        INode n3 = g.addNode();
+        INode n4 = g.addNode();
+
+        g.addEdge(n1, n2);
+        g.addEdge(n2, n3);
+        g.addEdge(n3, n4);
+        g.addEdge(n4, n1);
+
+        WelshAndPowell wp = new WelshAndPowell();
+        ColorProperty computedColors = wp.apply(g, null);
+
+        java.util.ArrayList<Color> usedColors = new java.util.ArrayList<>();
+
+        for (INode node : g.getNodes()) {
+            Color c = computedColors.getNodeValue(node);
+            assertNotNull("Each node must receive a color", c);
+            if (!usedColors.contains(c)) {
+                usedColors.add(c);
+            }
+        }
+
+        assertTrue("The algorithm should not use more than 4 colors on this small graph",
+                usedColors.size() <= 4);
     }
 
 }
