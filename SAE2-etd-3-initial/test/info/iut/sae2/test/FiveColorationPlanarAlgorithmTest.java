@@ -1,4 +1,3 @@
-package info.iut.sae2.test;
 
 import info.iut.sae2.algorithm.FiveColorationPlanarAlgorithm;
 import info.iut.sae2.graphs.Color;

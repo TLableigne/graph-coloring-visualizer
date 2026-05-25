@@ -553,7 +553,9 @@ public class Graph implements IGraph {
      */
     @Override
     public void setAllNodesPositions(Coord c) {
-        this.layout.setAllNodesValues(c);
+        for (INode n : this.getNodes()) {
+            this.layout.setNodeValue(n, c);
+        }
     }
 
     /**
@@ -564,7 +566,9 @@ public class Graph implements IGraph {
      */
     @Override
     public void setAllEdgesPositions(ArrayList<Coord> bends) {
-        this.layout.setAllEdgesValues(bends);
+        for (IEdge e : this.getEdges()) {
+            this.layout.setEdgeValue(e, bends);
+        }
     }
 
     /**
