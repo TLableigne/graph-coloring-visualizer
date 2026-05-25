@@ -14,10 +14,15 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 /**
- * Tests for the Graph class.
+ * Test class for the Graph core data structure.
+ * Verifies all graph manipulation and querying functionalities.
  */
 public class GraphTest {
 
+    /**
+     * Tests the addition of nodes (via instance or automatic creation) and edges.
+     * Verifies that counters are properly incremented and edge source/target links are correct.
+     */
     @Test
     public void testAddNodesAndEdges() {
         Graph g = new Graph();
@@ -40,6 +45,9 @@ public class GraphTest {
         assertEquals(n2, e.target());
     }
 
+    /**
+     * Tests retrieving the neighbors of a given node and calculating its total degree.
+     */
     @Test
     public void testNeighborsAndDegree() {
         Graph g = new Graph();
@@ -58,6 +66,10 @@ public class GraphTest {
         assertEquals(2, g.degree(n2));
     }
 
+    /**
+     * Tests the default dimensions of nodes and the ability to modify them
+     * individually (setNodeSize) or globally (setAllNodesSizes).
+     */
     @Test
     public void testSizeDefaultsAndSetters() {
         Graph g = new Graph();
@@ -77,6 +89,9 @@ public class GraphTest {
         assertEquals(4.0, g.getNodeSize(n).getH(), 0.001);
     }
 
+    /**
+     * Tests the default thickness of edges and its individual or global modification.
+     */
     @Test
     public void testEdgeWidthDefaultsAndSetters() {
         Graph g = new Graph();
@@ -94,6 +109,10 @@ public class GraphTest {
         assertEquals(4.0, g.getEdgeWidth(e), 0.001);
     }
 
+    /**
+     * Tests the spatial positioning of nodes via coordinates and validates 
+     * the correct calculation of the graph's bounding box.
+     */
     @Test
     public void testPositionsAndBoundingBox() {
         Graph g = new Graph();
@@ -116,6 +135,10 @@ public class GraphTest {
         assertEquals(50.0, bottomRight.getY(), 0.001);
     }
 
+    /**
+     * Tests the assignment of a default color upon creation and validates
+     * the behavior of the Welsh & Powell coloration shortcut.
+     */
     @Test
     public void testColorDefaultsAndWelshAndPowell() {
         Graph g = new Graph();
@@ -145,6 +168,10 @@ public class GraphTest {
         assertFalse(c2.equals(c3));
     }
 
+    /**
+     * Tests the removal of edges (delEdge) and nodes (delNode) in the graph.
+     * Also ensures that deleting a node removes all its attached edges.
+     */
     @Test
     public void testDelNodeAndDelEdge() {
         Graph g = new Graph();
@@ -169,6 +196,9 @@ public class GraphTest {
         assertFalse(g.getEdges().contains(e1));
     }
 
+    /**
+     * Tests retrieving predecessor and successor nodes to evaluate directed graph traversal.
+     */
     @Test
     public void testSuccessorsAndPredecessors() {
         Graph g = new Graph();
@@ -191,6 +221,9 @@ public class GraphTest {
         assertTrue(pred.contains(n2));
     }
 
+    /**
+     * Tests conditionally retrieving incoming, outgoing, or both types of edges for a specific node.
+     */
     @Test
     public void testEdgeQueries() {
         Graph g = new Graph();
@@ -218,6 +251,10 @@ public class GraphTest {
         assertTrue(outEdges.contains(e3));
     }
 
+    /**
+     * Verifies that methods left unimplemented return a neutral/null state 
+     * to avoid unexpected exceptions in the existing logic.
+     */
     @Test
     public void testUnimplementedMethods() {
         Graph g = new Graph();
@@ -232,6 +269,9 @@ public class GraphTest {
         assertNull(g.getEdge(n1, n2, false));
     }
 
+    /**
+     * Tests advanced layout properties, such as positioning edges using multiple bend points.
+     */
     @Test
     public void testLayoutProperties() {
         Graph g = new Graph();
@@ -255,6 +295,9 @@ public class GraphTest {
         assertNotNull(g.getLayout());
     }
 
+    /**
+     * Tests the execution and valid color assignment via the 6-color planar utility method.
+     */
     @Test
     public void testSixColors() {
         Graph g = new Graph();
@@ -273,6 +316,9 @@ public class GraphTest {
         assertNotNull(g.getNodeColor(n3));
     }
 
+    /**
+     * Tests the execution and valid color assignment via the 5-color planar utility method.
+     */
     @Test
     public void testFiveColors() {
         Graph g = new Graph();

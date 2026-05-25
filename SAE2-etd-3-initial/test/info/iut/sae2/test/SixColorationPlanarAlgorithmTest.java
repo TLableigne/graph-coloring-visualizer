@@ -1,4 +1,3 @@
-
 import info.iut.sae2.algorithm.SixColorationPlanarAlgorithm;
 import info.iut.sae2.graphs.Color;
 import info.iut.sae2.graphs.Graph;
@@ -9,8 +8,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 
+/**
+ * Test class for the planar graph coloration algorithm (6-color limit).
+ */
 public class SixColorationPlanarAlgorithmTest {
 
+    /**
+     * Tests the algorithm's behavior on an empty graph.
+     * Verifies that it does not throw an exception and returns a non-null ColorProperty object.
+     */
     @Test
     public void testEmptyGraph() {
         Graph g = new Graph();
@@ -19,6 +25,10 @@ public class SixColorationPlanarAlgorithmTest {
         assertNotNull(colors);
     }
 
+    /**
+     * Tests the algorithm's behavior on a disconnected graph.
+     * Verifies that colors are properly assigned to isolated nodes.
+     */
     @Test
     public void testDisconnectedGraph() {
         Graph g = new Graph();
@@ -32,6 +42,10 @@ public class SixColorationPlanarAlgorithmTest {
         assertNotNull(colors.getNodeValue(n2));
     }
 
+    /**
+     * Tests the coloration of a triangle graph (K3).
+     * Verifies that 3 interconnected nodes receive 3 distinct colors.
+     */
     @Test
     public void testTriangleGraph() {
         Graph g = new Graph();
@@ -59,6 +73,10 @@ public class SixColorationPlanarAlgorithmTest {
         assertFalse(c3.equals(c1));
     }
 
+    /**
+     * Tests the coloration of a complete graph with 4 nodes (K4).
+     * Verifies that all 4 nodes receive different colors.
+     */
     @Test
     public void testCompleteGraphK4() {
         Graph g = new Graph();
@@ -90,6 +108,10 @@ public class SixColorationPlanarAlgorithmTest {
         assertFalse(c3.equals(c4));
     }
 
+    /**
+     * Tests the theoretical color limit on a complex planar graph.
+     * Verifies that the algorithm uses no more than 6 colors in total to color the entire graph.
+     */
     @Test
     public void testPlanarGraphColorCount() {
         Graph g = new Graph();
