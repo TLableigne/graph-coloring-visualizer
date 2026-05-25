@@ -1,5 +1,3 @@
-package info.iut.sae2.test;
-
 import info.iut.sae2.algorithm.SixColorationPlanarAlgorithm;
 import info.iut.sae2.graphs.Color;
 import info.iut.sae2.graphs.Graph;
@@ -85,13 +83,9 @@ public class SixColorationPlanarAlgorithmTest {
     }
 
     /**
-    * Tests the algorithm on the complete graph K4.
-
-    * In this graph, each node is adjacent to every other node.
-
-    * Expected result: the four nodes must receive four distinct colors,
-    * because every pair of nodes is adjacent.
-    */
+     * Tests the coloration of a complete graph with 4 nodes (K4).
+     * Verifies that all 4 nodes receive different colors.
+     */
     @Test
     public void testCompleteGraphK4() {
         Graph g = new Graph();

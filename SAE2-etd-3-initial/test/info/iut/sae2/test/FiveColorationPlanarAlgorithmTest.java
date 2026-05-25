@@ -1,5 +1,3 @@
-package info.iut.sae2.test;
-
 import info.iut.sae2.algorithm.FiveColorationPlanarAlgorithm;
 import info.iut.sae2.graphs.Color;
 import info.iut.sae2.graphs.Graph;
@@ -31,11 +29,9 @@ public class FiveColorationPlanarAlgorithmTest {
     }
 
     /**
-    * Tests the algorithm on a disconnected graph made of two isolated nodes.
-
-    * Expected result: each node must receive a color, even if there is no edge
-    * in the graph.
-    */
+     * Tests the algorithm's behavior on a disconnected graph.
+     * Verifies that colors are properly assigned to isolated nodes.
+     */
     @Test
     public void testDisconnectedGraph() {
         Graph g = new Graph();
@@ -50,13 +46,9 @@ public class FiveColorationPlanarAlgorithmTest {
     }
 
     /**
-    * Tests the algorithm on a triangle graph.
-
-    * This graph contains three nodes that are all adjacent to each other.
-
-    * Expected result: the three nodes must all receive non-null colors, and no
-    * two adjacent nodes may share the same color.
-    */
+     * Tests the coloration of a triangle graph (K3).
+     * Verifies that 3 interconnected nodes receive 3 distinct colors.
+     */
     @Test
     public void testTriangleGraph() {
         Graph g = new Graph();
@@ -85,13 +77,9 @@ public class FiveColorationPlanarAlgorithmTest {
     }
 
     /**
-    * Tests the algorithm on the complete graph K4.
-
-    * In this graph, each node is adjacent to every other node.
-
-    * Expected result: the four nodes must receive four distinct colors,
-    * because every pair of nodes is adjacent.
-    */
+     * Tests the coloration of a complete graph with 4 nodes (K4).
+     * Verifies that all 4 nodes receive different colors (absolute condition for K4).
+     */
     @Test
     public void testCompleteGraphK4() {
         Graph g = new Graph();
@@ -123,15 +111,10 @@ public class FiveColorationPlanarAlgorithmTest {
         assertFalse(c3.equals(c4));
     }
 
-    
-
     /**
-    * Tests that the algorithm does not modify the original graph structure.
-
-    * Expected result: after the execution of the algorithm, the original graph
-    * must keep the same number of nodes, the same number of edges and the same
-    * neighborhoods.
-    */
+     * Tests the theoretical color limit on a complex planar graph.
+     * Verifies that the algorithm uses no more than 5 colors in total to color the entire graph.
+     */
     @Test
     public void testOriginalGraphIsNotModified() {
         Graph g = new Graph();

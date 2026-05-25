@@ -1,5 +1,3 @@
-package info.iut.sae2.test;
-
 import info.iut.sae2.graphs.Color;
 import info.iut.sae2.graphs.Coord;
 import info.iut.sae2.graphs.Graph;
@@ -77,10 +75,8 @@ public class GraphTest {
     }
 
     /**
-     * Tests default node size and size setters.
-     *
-     * This test verifies that a new node has the default size and that the
-     * size setters correctly update one node or all nodes.
+     * Tests the default dimensions of nodes and the ability to modify them
+     * individually (setNodeSize) or globally (setAllNodesSizes).
      */
     @Test
     public void testSizeDefaultsAndSetters() {
@@ -125,10 +121,8 @@ public class GraphTest {
     }
 
     /**
-     * Tests node positions and the graph bounding box.
-     *
-     * This test verifies that the positions set on nodes are correctly stored
-     * and that the bounding box matches the graph layout.
+     * Tests the spatial positioning of nodes via coordinates and validates 
+     * the correct calculation of the graph's bounding box.
      */
     @Test
     public void testPositionsAndBoundingBox() {
@@ -154,10 +148,8 @@ public class GraphTest {
     }
 
     /**
-     * Tests default node colors and Welsh and Powell integration.
-     *
-     * This test checks that nodes have a default color and that the Welsh and
-     * Powell algorithm assigns valid different colors on a triangle graph.
+     * Tests the assignment of a default color upon creation and validates
+     * the behavior of the Welsh & Powell coloration shortcut.
      */
     @Test
     public void testColorDefaultsAndWelshAndPowell() {
@@ -189,10 +181,8 @@ public class GraphTest {
     }
 
     /**
-     * Tests deletion of nodes and edges.
-     *
-     * This test verifies that deleting an edge removes only that edge and that
-     * deleting a node also removes its incident edges.
+     * Tests the removal of edges (delEdge) and nodes (delNode) in the graph.
+     * Also ensures that deleting a node removes all its attached edges.
      */
     @Test
     public void testDelNodeAndDelEdge() {
@@ -280,10 +270,8 @@ public class GraphTest {
     }
 
     /**
-     * Tests various implemented methods from the graph interface.
-     *
-     * This test checks that helper methods behave correctly, including graph
-     * creation, copy, edge existence and edge retrieval.
+     * Verifies that methods left unimplemented return a neutral/null state 
+     * to avoid unexpected exceptions in the existing logic.
      */
     @Test
     public void testImplementedMethods() {

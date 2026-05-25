@@ -1,4 +1,3 @@
-package info.iut.sae2.test;
 
 import info.iut.sae2.algorithm.WelshAndPowell;
 import info.iut.sae2.graphs.Color;
@@ -17,11 +16,14 @@ import static org.junit.Assert.*;
 public class WelshAndPowellTest {
 
     /**
-     * Tests a simple graph triangle All three nodes are connected to each
-     * other, so they must have a different color
+     * Tests a simple graph triangle
+     * All three nodes are connected to each other, so they must have a different
+     * color
      */
     @Test
-    public void testTriangleGraph() { // If the tests do not pass, the user should manualy import the two tests libraries from the lib folder of this repository (junit-4.13.2.jar and hamcrest-core-1.3.jar)
+    public void testTriangleGraph() { // If the tests do not pass, the user should manualy import the two tests
+                                      // libraries from the lib folder of this repository (junit-4.13.2.jar and
+                                      // hamcrest-core-1.3.jar)
         Graph g = new Graph();
 
         INode n1 = g.addNode();
@@ -53,10 +55,10 @@ public class WelshAndPowellTest {
                 c2.getR() == c3.getR() && c2.getG() == c3.getG() && c2.getB() == c3.getB());
     }
 
-    /**
-     * *
-     * Tests a disconnected graph The nodes with no edges should idealy be
-     * assigned to the same first available color.
+    /***
+     * Tests a disconnected graph
+     * The nodes with no edges should idealy be assigned to the same first available
+     * color.
      */
     @Test
     public void testDisconnectedGraph() {
@@ -134,9 +136,10 @@ public class WelshAndPowellTest {
     }
 
     /**
-     * Tests a Star Graph. One central node is connected to multiple surrounding
-     * nodes. The central node should get one color, and all disconnected outer
-     * nodes should share a second color.
+     * Tests a Star Graph.
+     * One central node is connected to multiple surrounding nodes.
+     * The central node should get one color, and all disconnected outer nodes
+     * should share a second color.
      */
     @Test
     public void testStarGraph() {
@@ -199,12 +202,18 @@ public class WelshAndPowellTest {
         Color c3 = computedColors.getNodeValue(n3);
         Color c4 = computedColors.getNodeValue(n4);
 
-        assertFalse("n1 and n2 must differ", c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB());
-        assertFalse("n1 and n3 must differ", c1.getR() == c3.getR() && c1.getG() == c3.getG() && c1.getB() == c3.getB());
-        assertFalse("n1 and n4 must differ", c1.getR() == c4.getR() && c1.getG() == c4.getG() && c1.getB() == c4.getB());
-        assertFalse("n2 and n3 must differ", c2.getR() == c3.getR() && c2.getG() == c3.getG() && c2.getB() == c3.getB());
-        assertFalse("n2 and n4 must differ", c2.getR() == c4.getR() && c2.getG() == c4.getG() && c2.getB() == c4.getB());
-        assertFalse("n3 and n4 must differ", c3.getR() == c4.getR() && c3.getG() == c4.getG() && c3.getB() == c4.getB());
+        assertFalse("n1 and n2 must differ",
+                c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB());
+        assertFalse("n1 and n3 must differ",
+                c1.getR() == c3.getR() && c1.getG() == c3.getG() && c1.getB() == c3.getB());
+        assertFalse("n1 and n4 must differ",
+                c1.getR() == c4.getR() && c1.getG() == c4.getG() && c1.getB() == c4.getB());
+        assertFalse("n2 and n3 must differ",
+                c2.getR() == c3.getR() && c2.getG() == c3.getG() && c2.getB() == c3.getB());
+        assertFalse("n2 and n4 must differ",
+                c2.getR() == c4.getR() && c2.getG() == c4.getG() && c2.getB() == c4.getB());
+        assertFalse("n3 and n4 must differ",
+                c3.getR() == c4.getR() && c3.getG() == c4.getG() && c3.getB() == c4.getB());
     }
 
     /**
@@ -269,11 +278,16 @@ public class WelshAndPowellTest {
         Color c4 = computedColors.getNodeValue(n4);
         Color c5 = computedColors.getNodeValue(n5);
 
-        assertFalse("n1 and n2 must differ", c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB());
-        assertFalse("n2 and n3 must differ", c2.getR() == c3.getR() && c2.getG() == c3.getG() && c2.getB() == c3.getB());
-        assertFalse("n3 and n4 must differ", c3.getR() == c4.getR() && c3.getG() == c4.getG() && c3.getB() == c4.getB());
-        assertFalse("n4 and n5 must differ", c4.getR() == c5.getR() && c4.getG() == c5.getG() && c4.getB() == c5.getB());
-        assertFalse("n5 and n1 must differ", c5.getR() == c1.getR() && c5.getG() == c1.getG() && c5.getB() == c1.getB());
+        assertFalse("n1 and n2 must differ",
+                c1.getR() == c2.getR() && c1.getG() == c2.getG() && c1.getB() == c2.getB());
+        assertFalse("n2 and n3 must differ",
+                c2.getR() == c3.getR() && c2.getG() == c3.getG() && c2.getB() == c3.getB());
+        assertFalse("n3 and n4 must differ",
+                c3.getR() == c4.getR() && c3.getG() == c4.getG() && c3.getB() == c4.getB());
+        assertFalse("n4 and n5 must differ",
+                c4.getR() == c5.getR() && c4.getG() == c5.getG() && c4.getB() == c5.getB());
+        assertFalse("n5 and n1 must differ",
+                c5.getR() == c1.getR() && c5.getG() == c1.getG() && c5.getB() == c1.getB());
     }
 
     /**
