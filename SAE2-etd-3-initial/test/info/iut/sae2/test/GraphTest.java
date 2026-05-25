@@ -1,5 +1,3 @@
-package info.iut.sae2.test;
-
 import info.iut.sae2.graphs.Color;
 import info.iut.sae2.graphs.Coord;
 import info.iut.sae2.graphs.Graph;
@@ -234,8 +232,6 @@ public class GraphTest {
         assertNull(g.getEdge(n1, n2, false));
     }
 
-
-
     @Test
     public void testLayoutProperties() {
         Graph g = new Graph();
@@ -265,13 +261,13 @@ public class GraphTest {
         INode n1 = g.addNode();
         INode n2 = g.addNode();
         INode n3 = g.addNode();
-        
+
         g.addEdge(n1, n2);
         g.addEdge(n2, n3);
         g.addEdge(n1, n3);
-        
+
         g.sixColors();
-        
+
         assertNotNull(g.getNodeColor(n1));
         assertNotNull(g.getNodeColor(n2));
         assertNotNull(g.getNodeColor(n3));
@@ -283,13 +279,13 @@ public class GraphTest {
         INode n1 = g.addNode();
         INode n2 = g.addNode();
         INode n3 = g.addNode();
-        
+
         g.addEdge(n1, n2);
         g.addEdge(n2, n3);
         g.addEdge(n1, n3);
-        
+
         g.fiveColors();
-        
+
         assertNotNull(g.getNodeColor(n1));
         assertNotNull(g.getNodeColor(n2));
         assertNotNull(g.getNodeColor(n3));
