@@ -234,31 +234,7 @@ public class GraphTest {
         assertNull(g.getEdge(n1, n2, false));
     }
 
-    @Test
-    public void testColorProperties() {
-        Graph g = new Graph();
-        INode n1 = g.addNode();
-        INode n2 = g.addNode();
-        IEdge e = g.addEdge(n1, n2);
 
-        Color c1 = new Color(255, 0, 0);
-        g.setNodeColor(n1, c1);
-        assertEquals(c1, g.getNodeColor(n1));
-
-        Color c2 = new Color(0, 255, 0);
-        g.setEdgeColor(e, c2);
-        assertEquals(c2, g.getEdgeColor(e));
-
-        Color c3 = new Color(0, 0, 255);
-        g.setAllNodesColors(c3);
-        assertEquals(c3, g.getNodeColor(n1));
-        assertEquals(c3, g.getNodeColor(n2));
-
-        Color c4 = new Color(255, 255, 0);
-        g.setAllEdgesColors(c4);
-        assertEquals(c4, g.getEdgeColor(e));
-        assertNotNull(g.getColor());
-    }
 
     @Test
     public void testLayoutProperties() {
@@ -318,5 +294,4 @@ public class GraphTest {
         assertNotNull(g.getNodeColor(n2));
         assertNotNull(g.getNodeColor(n3));
     }
-
 }

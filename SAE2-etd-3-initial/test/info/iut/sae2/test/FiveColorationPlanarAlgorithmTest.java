@@ -10,12 +10,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 
-public class FiveColorationPlanarAlgorithm {
+public class FiveColorationPlanarAlgorithmTest {
 
     @Test
     public void testEmptyGraph() {
         Graph g = new Graph();
-        FiveColoring fc = new FiveColoring();
+        FiveColorationPlanarAlgorithm fc = new FiveColorationPlanarAlgorithm();
         ColorProperty colors = fc.apply(g, null);
         assertNotNull(colors);
     }
@@ -26,7 +26,7 @@ public class FiveColorationPlanarAlgorithm {
         INode n1 = g.addNode();
         INode n2 = g.addNode();
 
-        FiveColoring fc = new FiveColoring();
+        FiveColorationPlanarAlgorithm fc = new FiveColorationPlanarAlgorithm();
         ColorProperty colors = fc.apply(g, null);
 
         assertNotNull(colors.getNodeValue(n1));
@@ -44,7 +44,7 @@ public class FiveColorationPlanarAlgorithm {
         g.addEdge(n2, n3);
         g.addEdge(n3, n1);
 
-        FiveColoring fc = new FiveColoring();
+        FiveColorationPlanarAlgorithm fc = new FiveColorationPlanarAlgorithm();
         ColorProperty colors = fc.apply(g, null);
 
         Color c1 = colors.getNodeValue(n1);
@@ -75,7 +75,7 @@ public class FiveColorationPlanarAlgorithm {
         g.addEdge(n2, n4);
         g.addEdge(n3, n4);
 
-        FiveColoring fc = new FiveColoring();
+        FiveColorationPlanarAlgorithm fc = new FiveColorationPlanarAlgorithm();
         ColorProperty colors = fc.apply(g, null);
 
         Color c1 = colors.getNodeValue(n1);
@@ -109,7 +109,7 @@ public class FiveColorationPlanarAlgorithm {
         g.addEdge(n6, n1);
         g.addEdge(n1, n4);
 
-        FiveColoring fc = new FiveColoring();
+        FiveColorationPlanarAlgorithm fc = new FiveColorationPlanarAlgorithm();
         ColorProperty colors = fc.apply(g, null);
 
         ArrayList<Color> usedColors = new ArrayList<>();
